@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define MAXOP 100
 #define NUMBER '0'
@@ -12,6 +13,8 @@
 #define REPLACE 'R'
 #define PRINT 'P'
 #define CLEAR 'C'
+#define POWER 'W'
+#define SINUS 'S'
 
 int    sp = 0;
 int    bufp = 0;
@@ -31,7 +34,6 @@ void        clear(void);
 void        print(void);
 void        replace(void);
 void    power(void);
-void    sinus(void);
 
 int main() {
     int type;
@@ -88,23 +90,14 @@ int main() {
         case REPLACE:
             replace();
             break;
+        case POWER:
+            power();
+        case SINUS:
+            push(sin(pop()));
         case '\n':
             break;
 
-        case 'p':
-            break;
-        case 'o':
-            break;
-        case 'w':
-            break;
-            
-        case 's':
-            break;
-        case 'i':
-            break;
-        case 'n':
-            break;
-            
+        
         default:
             printf("ошибка: неизвестная операция %s\n", s);
             break;
@@ -132,18 +125,11 @@ void push(double f) {
 
 int getop(char s[]) {
     int i, c;
-
-    while((s[0] = c = getch()) == ' ' || c == '\t')
-        ;
-
-    if(s[0] == 'p' || s[1] == 'o' || s[2] == 'w') { /* здесь хочу заменить || на &&, но тогда это не работает */
-        power();
+    c = ' ';
+    while(c == ' ' || c == '\t') {
+        c = getch();
     }
-    
-    if(s[0] == 's' || s[1] == 'i' || s[2] == 'n') { /* здесь хочу заменить || на &&, но тогда это не работает */
-        sinus();
-    }
-
+    s[0]=c;
     if(
         s[0] == HEAD ||
         s[0] == DUPLICATE ||
@@ -155,6 +141,25 @@ int getop(char s[]) {
 
     s[1] = '\0';
 
+    i = 0;
+    if(c == 'p' || c == 's') {
+        while((s[++i] = c = getch()) != EOF) {
+            if(s[i] > 'a' && s[i] < 'z') {
+                continue;
+            } else {
+                ungetch(c);
+                break;
+            }
+        }
+        if(s[0] == 'p' && s[1] == 'o' && s[2] == 'w') {
+            return POWER;
+        } else if (s[0] == 's' && s[1] == 'i' && s[2] == 'n') {
+            return SINUS;
+        }
+    }
+
+
+    
     if(!isdigit(c) && c != '.' && c != '-')
         return c;
 
@@ -162,7 +167,6 @@ int getop(char s[]) {
 
     if(c == '-') {
         while(isdigit(s[++i] = c = getch()));
-
         if(i == 1) {
             ungetch(c);
             return '-';
