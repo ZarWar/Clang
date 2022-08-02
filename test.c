@@ -17,17 +17,21 @@
 #define SINUS 'S'
 
 int    sp = 0;
+int    spOp = 0;
 int    bufp = 0;
 char   s[MAXOP];
 
 char   buf[BUFSIZE];
 double val[MAXVAL];
+char   operands[MAXVAL];
 
 int    getop(char[]);
 int      getch(void);
 void     ungetch(int);
 double     pop(void);
 void       push(double);
+double     popOp(void);
+void       pushOp(char);
 void        nline(void);
 double      head(void);
 void        clear(void);
@@ -37,45 +41,72 @@ void    power(void);
 
 int main() {
     int type;
-    double op1, op2, type2;
+    double op1, op2, op4, type2;
+    char op3;
     while((type = getop(s)) != EOF) { 
         switch(type) {
         case NUMBER:
             push(atof(s));
             break;
         case '+':
-            push(pop() + pop());
+            pushOp('+');
             break;
         case '*':
-            push(pop() * pop());
+            pushOp('*');
             break;
         case '-':
-            op2 = pop();
-            push(pop() - op2);
+            pushOp('-');
             break;
         case '%':
-            op2 = pop();
-            op1 = pop();
-            if(op2 != 0.0) {
-                int op3 = op1 / op2;
-                double op4 = op1 - (op3 * op2);
-                push(op4);
-                break;
-            } else {
-                printf("ошибка: модуль от нуля %c\n", '%');
-                break;
-            }
+            pushOp('%');
+            break;
+
+            // op2 = pop();
+            // op1 = pop();
+            // if(op2 != 0.0) {
+            //     int op3 = op1 / op2;
+            //     double op4 = op1 - (op3 * op2);
+            //     push(op4);
+            //     break;
+            // } else {
+            //     printf("ошибка: модуль от нуля %c\n", '%');
+            //     break;
+            // }
         case '/':
-            op2 = pop();
-            if(op2 != 0.0) {
-                push(pop() / op2);
-                break;
-            } else {
-                pop();
-                printf("ошибка: деление на нуль \\ \n");
-                break;
-            }
+            pushOp('/');
+            break;
+
+            // op2 = pop();
+            // if(op2 != 0.0) {
+            //     push(pop() / op2);
+            //     break;
+            // } else {
+            //     pop();
+            //     printf("ошибка: деление на нуль \\ \n");
+            //     break;
+            // }
         case HEAD:
+            
+            while(spOp > 0) {
+                op1 = pop();
+                op2 = pop();
+                op3 = popOp();
+
+                switch(op3) {
+                case '-':
+                    push(op2 - op1);
+                    break;
+                case '+':
+                    push(op1 + op2);
+                    break;
+                case '*':
+                    push(op1 * op2);
+                    break;
+                case '/':
+                    push(op2 / op1);
+                    break;
+                }
+            }
             printf("HEAD = %f\n", head());
             break;
         case DUPLICATE:
@@ -123,6 +154,23 @@ void push(double f) {
     }
 }
 
+double popOp(void) {
+    if(spOp > 0) {
+        return operands[--spOp];
+    } else {
+        printf("ошибка: стек пуст\n");
+        return 0.0;
+    }
+}
+
+void pushOp(char fOp) {
+    if(spOp < MAXVAL) {
+        operands[spOp++]=fOp;
+    } else {
+        printf("ошибка: стек полон, %c не помещается\n", fOp);
+    }
+}
+
 int getop(char s[]) {
     int i, c;
     c = ' ';
@@ -130,6 +178,7 @@ int getop(char s[]) {
         c = getch();
     }
     s[0]=c;
+    
     if(
         s[0] == HEAD ||
         s[0] == DUPLICATE ||
@@ -158,8 +207,6 @@ int getop(char s[]) {
         }
     }
 
-
-    
     if(!isdigit(c) && c != '.' && c != '-')
         return c;
 

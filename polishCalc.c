@@ -35,6 +35,7 @@ void        print(void);
 void        replace(void);
 void    power(void);
 
+
 int main() {
     int type;
     double op1, op2, type2;
@@ -130,6 +131,7 @@ int getop(char s[]) {
         c = getch();
     }
     s[0]=c;
+    
     if(
         s[0] == HEAD ||
         s[0] == DUPLICATE ||
@@ -156,6 +158,10 @@ int getop(char s[]) {
         } else if (s[0] == 's' && s[1] == 'i' && s[2] == 'n') {
             return SINUS;
         }
+    }
+
+    if (c >= 'a' && c <= 'z') {
+        
     }
 
 
