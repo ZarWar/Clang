@@ -1,130 +1,66 @@
 #include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <math.h>
 
-void intToCharString(int n, char from[], char to[]);
-int  intToString(int n, int from[], int to[]);
-char reverseString(char from[], char to[], int size);
-char convertIntToNumericBase(int digit, char string, int base);
-int power(int p, int p16);
-void convertCharToInt(char from[], int to[]);
-char decToHex(char to[]);
+#define MAXOP 100
 
-int size = 0;
+#define HEAD 'H'
+#define DUPLICATE 'D'
+#define CLEAR 'C'
+#define REPLACE 'R'
+
+char s[MAXOP];
 
 int main() {
-    int n = 168;
-    char from[10] = {0};
-    char to[10] = {0};
-    int digit[10] = {0};
-    intToCharString(n, from, to);
-    convertCharToInt(from, digit);
-    decToHex(to);
-    printf("%s\n", to);
-}
+    int i, y, c;
+    c = ' ';
+    while(c == ' ' || c == '\t') {
+        c = getch();
+        printf("строка 20: getch()==%d, '%c'\n", c, c);
+    }
+    s[0]=c;
+    printf("строка 23: s[0]==%d, '%c'\n", s[0], s[0]);
+    s[1] = '\0';
 
-void intToCharString(int n, char from[], char to[]) {
-    int i, sign;
-    if ((sign = n) < 0) {
-        n = -n;
+    if(
+        s[0] == HEAD ||
+        s[0] == DUPLICATE ||
+        s[0] == CLEAR ||
+        s[0] == REPLACE
+    ) {
+        printf("строка 32: s[0]==%d, '%c'\n", s[0], s[0]);
     }
 
-    i = 0;
-    do (from[i++] = n % 10 + '0');
-    while((n/=10)>0);
-    size = i;
-}
-
-int intToString(int n, int from[], int to[]) {
-    int i, sign, size;
-    if ((sign = n) < 0) {
-        n = -n;
-    }
-
-    i = 0;
-    do (from[i++] = n % 10 + '0');
-    while((n/=10)>0);
-    size = i;
-    return *from;
-}
-
-char reverseString(char from[], char to[], int size) {
-    for (int i=0; i<size && from[i]!='\n'; i++) {
-        to[(size-1)-i] = from[i];
-    }
-    return *to;
-}
-
-char convertIntToNumericBase (int digit, char string, int base) {
-    return 0;
-}
-
-int power(int p, int p16) {
-    int r = 1;
-    for (int i = 0; i<p; i++) {
-        r *= p16;
-    }
-    return r;
-}
-
-void convertCharToInt(char from[], int to[]) {
-    for (int i=0; i<size; i++) {
-        switch(from[i]) {
-        case '0' : to[i] = 0 ; break;
-        case '1' : to[i] = 1 ; break;
-        case '2' : to[i] = 2 ; break;
-        case '3' : to[i] = 3 ; break;
-        case '4' : to[i] = 4 ; break;
-        case '5' : to[i] = 5 ; break;
-        case '6' : to[i] = 6 ; break;
-        case '7' : to[i] = 7 ; break;
-        case '8' : to[i] = 8 ; break;
-        case '9' : to[i] = 9 ; break;
+    if(s[0] >= 'a' && s[0] <= 'j') {
+        int p = 0;
+        printf("попал в условие с переменной\n");
+        // c = getch();
+        while((c=getch()) == ' ' || (c=getch()) == '\t') { /* 'while' для хераченья сколько угодно пробелов между символом '=' и числами в момент присвоения переменной значения */
+            p++;
+            // if ((c=getch()) == '\n') {
+            //     printf("строка 40, количество пробелов перед числом: %d\n", p);
+            // }
+        }
+        if (p > 0) {
+            printf("строка 44, количество пробелов перед числом: %d\n", p);
+        }
+        // c = getch();
+        if ((c=getch()) == '=') {
+            printf("попал в условие getch()=='='\n");
+            // s[1] = '\0';
+            i = 0;
+            // getch(c);
+            if(isdigit(c)) {
+                while(isdigit(s[++i] = c = getch())) {
+                    ;
+                    for (y=0; y<i; y++) {
+                        printf("строка 54: s[%d]\n", s[i]);
+                    }
+                }
+            } else {
+                ;
+            }
         }
     }
 }
-
-char decToHex(char to[]) {
-    int n = 168;
-    int mod = 0;
-    for (int i=0; i<size; i++) {
-        mod = n % 16;
-        switch (mod) {
-            case 0 : to[i] = '0' ; break;
-            case 1 : to[i] = '1' ; break;
-            case 2 : to[i] = '2' ; break;
-            case 3 : to[i] = '3' ; break;
-            case 4 : to[i] = '4' ; break;
-            case 5 : to[i] = '5' ; break;
-            case 6 : to[i] = '6' ; break;
-            case 7 : to[i] = '7' ; break;
-            case 8 : to[i] = '8' ; break;
-            case 9 : to[i] = '9' ; break;
-            case 10 : to[i] = 'A' ; break;
-            case 11 : to[i] = 'B' ; break;
-            case 12 : to[i] = 'C' ; break;
-            case 13 : to[i] = 'D' ; break;
-            case 14 : to[i] = 'E' ; break;
-            case 15 : to[i] = 'F' ; break;
-        }
-
-    }
-    // int result = 0;
-    // int result2 = 0;
-    // for(int i=0; i<size; i++) {
-        // result += digit[i] * power(i,16);
-        // result2 = power(i,16);
-
-        // printf("%d r2:%d\n", result, result2);
-    // }
-    return *to;
-}
-
-// int decToHex(int digit[]) {
-//     int result = 0;
-//     int result2 = 0;
-//     for(int i=0; i<size; i++) {
-//         result += digit[i] * power(i,10);
-//         result2 = power(i,10);
-//         printf("%d r2:%d\n", result, result2);
-//     }
-//     return result;
-// }
