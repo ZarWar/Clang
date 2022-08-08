@@ -1,10 +1,12 @@
 #include <stdio.h>
 
-#define ASCII 128
-
 int main() {
-    int c;
-    for (int i=0; i<ASCII; i++) {
-        printf("%d> %c\n", i, i);
-    }
+    struct Vector {
+        int x;
+        int y;
+    };
+
+    struct Vector v = {9,4};
+
+    printf("%d\n", v.x * v.y);
 }
