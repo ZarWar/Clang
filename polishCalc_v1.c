@@ -1,39 +1,39 @@
-#include <stdio.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <math.h>
-
-#define MAXOP 100
-#define NUMBER '0'
-#define MAXVAL 100
-#define BUFSIZE 100
-
-#define HEAD 'H'
-#define DUPLICATE 'D'
-#define REPLACE 'R'
-#define PRINT 'P'
-#define CLEAR 'C'
-#define POWER 'W'
-#define SINUS 'S'
-
-int    sp = 0;
-int    bufp = 0;
-char   s[MAXOP];
-
-char   buf[BUFSIZE];
-double val[MAXVAL];
-
-int    getop(char[]);
-int      getch(void);
-void     ungetch(int);
-double     pop(void);
-void       push(double);
-void        nline(void);
-double      head(void);
-void        clear(void);
-void        print(void);
-void        replace(void);
-void    power(void);
+#include  <stdio.h>
+#include  <ctype.h>
+#include  <stdlib.h>
+#include  <math.h>
+  
+#define   MAXOP 100
+#define   NUMBER '0'
+#define   MAXVAL 100
+#define   BUFSIZE 100
+ 
+#define   HEAD 'H'
+#define   DUPLICATE 'D'
+#define   REPLACE 'R'
+#define   PRINT 'P'
+#define   CLEAR 'C'
+#define   POWER 'W'
+#define   SINUS 'S'
+ 
+int       sp = 0;
+int       bufp = 0;
+char      s[MAXOP];
+   
+char      buf[BUFSIZE];
+double    val[MAXVAL];
+   
+int       getop(char[]);
+int       getch(void);
+double    head(void);
+double    pop(void);
+void      ungetch(int);
+void      push(double);
+void      nline(void);
+void      clear(void);
+void      print(void);
+void      replace(void);
+void      power(void);
 
 
 int main() {

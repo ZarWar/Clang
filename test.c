@@ -152,12 +152,14 @@ int getop(char s[]) {
         }
         if ((c=getch()) == '=') {
             return c;
+            c;
         } else {
             s[1] = '\0';
             i = 0;
             if(isdigit(c)) {
                 while(isdigit(afterEquals[++i] = c = getch()) != EOF)
                     ;
+                printf("строка 161: ")
             }
         }
     }

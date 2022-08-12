@@ -1,23 +1,29 @@
-#include <stdio.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <math.h>
+#include  <stdio.h>
+#include  <ctype.h>
+#include  <stdlib.h>
+#include  <math.h>
+ 
+#define   MAXOP 100
+#define   BUFSIZE 100
+  
+#define   HEAD 'H'
+#define   DUPLICATE 'D'
+#define   CLEAR 'C'
+#define   REPLACE 'R'
+  
+int       c = ' ';
+int       bufp = 0;
+char      s[MAXOP];
+char      buf[BUFSIZE];
 
-#define MAXOP 100
-
-#define HEAD 'H'
-#define DUPLICATE 'D'
-#define CLEAR 'C'
-#define REPLACE 'R'
-
-char s[MAXOP];
+int       getch(void);  
+void      ungetch(int);
 
 int main() {
     int i, y, c;
-    c = ' ';
     int p = 0;
-    while((c=getchar()) == ' ' || c == '\t') {
-        printf("строка 20: getchar()==%d, '%c'\n", c, c);
+    while((c = getch()) == ' ' || c == '\t') {
+        printf("строка 20: getch()==%d, '%c'\n", c, c);
     }
 
     s[0]=c;
@@ -36,27 +42,19 @@ int main() {
     if(s[0] >= 'a' && s[0] <= 'j') {
         p = 0;
         printf("попал в условие с переменной\n");
-        // c = getchar();
-        while((c=getchar()) == ' ' || c == '\t') { /* 'while' для хераченья сколько угодно пробелов между символом '=' и числами в момент присвоения переменной значения */
-            p++;
-            // if ((c=getchar()) == '\n') {
-            //     printf("строка 40, количество пробелов перед числом: %d\n", p);
-            // }
+        // c = getch();
+        while((c=getch()) == ' ' || c == '\t') { /* 'while' для хераченья сколько угодно пробелов между символом '=' и числами в момент присвоения переменной значения */
+            ;
         }
-        if (p > 0) {
-            printf("строка 44, количество пробелов перед числом: %d\n", p);
-        }
-        // c = getchar();
-        if ((c=getchar()) == '=') {
-            printf("строка 51, попал в условие getchar() == '='\n");
+        if (c == '=') {
             // s[1] = '\0';
+            printf("строка 51, попал в условие getch() == '='\n");
             i = 0;
-            getchar();
             if(isdigit(c)) {
-                while(isdigit(s[++i] = c = getchar())) {
+                while(isdigit(s[++i] = c = getch())) {
                     ;
-                    for (y=0; y<i; y++) {
-                        printf("строка 54: s[%d]\n", s[i]);
+                    for (y=0; y<10; y++) {
+                        printf("строка 66: s[%d], y=%d\n", s[y], y);
                     }
                 }
             } else {
@@ -64,4 +62,15 @@ int main() {
             }
         }
     }
+}
+
+int getch(void) {
+    return(bufp > 0) ? buf[--bufp]: getch();
+}
+
+void ungetch(int c) {
+    if(bufp >= BUFSIZE)
+        printf("ungetch: слишком много символов\n");
+    else
+        buf[bufp++] = c;
 }
