@@ -11,4 +11,4 @@ int main() {
         s[i++] = c;
     }
     printf("%c\n", s[0]);
-}
+ı
