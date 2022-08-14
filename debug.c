@@ -1,36 +1,63 @@
-#include <stdio.h>
+#include  <stdio.h>
+#include  <ctype.h>
+#include  <stdlib.h>
+#include  <math.h>
+ 
+#define   MAXOP 100
+#define   BUFSIZE 100
+  
+#define   NUMBER '0'
+#define   HEAD 'H'
+#define   DUPLICATE 'D'
+#define   CLEAR 'C'
+#define   REPLACE 'R'
+  
+int       c = ' ';
+int       bufp = 0;
+char      m,n, a[10][1] = {0};
+char      s[MAXOP] = {0};
+char      buf[BUFSIZE] = {0};
 
-#define SIZE 5
-
-int concat(int x, int y);
-int concatArr(int *arr, int size);
+int       getop(char[]);
+int       getch(void);
+void      ungetch(int);
 
 int main() {
-    int c, b, i;
-    int arr[SIZE] = {8,2,3,4,6};
-    concatArr(arr, SIZE);
+    int i=0, y, c, h;
+    int p = 0; h = 0;
+
+    c = ' ';
+    while((c = getch()) == ' ' || c == '\t') {
+        ;
+    }
+    s[0] = c;
+
+    if(s[0] >= 'a' && s[0] <= 'j') {
+        int m2d = s[0];
+        if ((c=getch()) == '=') {
+            s[1] = c;
+            if(s[0] == 'a' && s[1] == '=') {
+                // c=getch();
+                while(isdigit(s[i++] = c = getch()) != EOF) {
+                    if(s[i] == '\n') {
+                        s[i] = '\0';
+                        break;
+                    }
+                }
+                printf("%s\n", s);
+            }
+        }
+    }
+    return NUMBER;
 }
 
-int concat(int x, int y) {
-    int temp = y;
-    while (y != 0) {
-        x *= 10;
-        y /= 10;
-    }
-    return x + temp;
+int getch(void) {
+    return(bufp > 0) ? buf[--bufp]: getchar();
 }
 
-int concatArr(int *arr, int size) {
-    int i,c,b;
-    for (i=0; i<size; i++) {
-        if (i%2=='0') {
-            c = concat(arr[i], arr[i+1]);
-            b = concat(c,b);
-            i++;
-        } else {
-            b = concat(b,arr[i]);
-        } 
-    }
-    printf("%d\n", b);
-    return b;
+void ungetch(int c) {
+    if(bufp >= BUFSIZE)
+        printf("ungetch: слишком много символов\n");
+    else
+        buf[bufp++] = c;
 }

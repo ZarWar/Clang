@@ -12,9 +12,9 @@
 #define   CLEAR 'C'
 #define   REPLACE 'R'
   
-int       c = ' ';
+char      c = ' ';
 int       bufp = 0;
-char      m,n, a[10][1] = {0};
+char      ln[10][2] = {0};
 char      s[MAXOP] = {0};
 char      buf[BUFSIZE] = {0};
 
@@ -23,30 +23,50 @@ int       getch(void);
 void      ungetch(int);
 
 int main() {
-    int i, y, c, h;
+    int i=0, y, h;
+    int n;
     int p = 0; h = 0;
+    
+    int l = 97;
+    for(int i=0; i<10; i++) {
+        ln[i][0] = l++;
+        printf("%c\n", ln[i][0]);
+    }
+    printf("\n\n");
 
-    c = ' ';
     while((c = getch()) == ' ' || c == '\t') {
         ;
     }
     s[0] = c;
+    i = 0;
 
     if(s[0] >= 'a' && s[0] <= 'j') {
-        int m2d = s[0];
+        for(int i=0; i<10; i++) {
+            printf("str 45 i=%d\n", i);
+            if(s[0] == ln[i][0]) {
+                n = i;
+                printf("str 48 n='%d'\n", n);
+                break;
+            }
+        }
         if ((c=getch()) == '=') {
             s[1] = c;
             if(s[0] == 'a' && s[1] == '=') {
-                c=getch();
+                printf("str 55\n");
                 while(isdigit(s[i++] = c = getch()) != EOF) {
-                    if(s[i] == 'p') {
-                        printf("%s", s);
+                    printf("str 57: c='%c' i='%d'\n", s[i], i);
+                    if(c == '\n') {
+                        s[i] = '\0';
+                        break;
                     }
                 }
+                printf("str 63\n");
+                printf("%s\n", s);
             }
         }
     }
-    s[++i]='\0';
+    int result = atof(s);
+    printf("str 69 '%d'\n", result);
     return NUMBER;
 }
 
