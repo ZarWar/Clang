@@ -6,6 +6,7 @@
 #define   MAXOP 100
 #define   BUFSIZE 100
   
+#define   NUMBER '0'
 #define   HEAD 'H'
 #define   DUPLICATE 'D'
 #define   CLEAR 'C'
@@ -13,6 +14,7 @@
   
 int       c = ' ';
 int       bufp = 0;
+char      m,n, a[10][1] = {0};
 char      s[MAXOP] = {0};
 char      buf[BUFSIZE] = {0};
 
@@ -22,45 +24,30 @@ void      ungetch(int);
 
 int main() {
     int i, y, c, h;
-    int p = 0; h = 2;
+    int p = 0; h = 0;
+
     c = ' ';
     while((c = getch()) == ' ' || c == '\t') {
-        printf("строка 29: getch()==%d, '%c'\n", c, c);
+        ;
     }
-
-    s[0]=c;
-
-    printf("строка 33: s[0]==%d, '%c'\n", s[0], s[0]);
-
-    if(
-        s[0] == HEAD ||
-        s[0] == DUPLICATE ||
-        s[0] == CLEAR ||
-        s[0] == REPLACE
-    ) {
-        printf("строка 41: s[0]==%d, '%c'\n", s[0], s[0]);
-    }
+    s[0] = c;
 
     if(s[0] >= 'a' && s[0] <= 'j') {
-        p = 0;
-        printf("строка 46: попал в условие с переменной\n");
-        printf("строка 47: c='%c'\n", c);
-        if ((c = getch()) == '=') {
-            printf("строка 54: попал в условие getch() == '='\n");
+        int m2d = s[0];
+        if ((c=getch()) == '=') {
             s[1] = c;
             if(s[0] == 'a' && s[1] == '=') {
-                printf("строка 62: провалился в условие s[0]=='a'\n");
                 c=getch();
-                while(isdigit(s[h++] = c = getch()) != EOF) {
-                    printf("\nстрока 64: попал в условие isdigit\n");
-                    for (y=0; y<h; y++) {
-                        printf("строка 66: s[%c], y=%d\n", s[y], y);
+                while(isdigit(s[i++] = c = getch()) != EOF) {
+                    if(s[i] == 'p') {
+                        printf("%s", s);
                     }
                 }
             }
         }
     }
-    return 0;
+    s[++i]='\0';
+    return NUMBER;
 }
 
 int getch(void) {

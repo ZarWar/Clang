@@ -145,7 +145,7 @@ int getop(char s[]) {
     s[1] = '\0';
 
     i = 0;
-    if(c == 'p' || c == 's') {
+    if(c == 'p' || c == 's') { /* Всю эту конструкцию нужно повторно осознать */
         while((s[++i] = c = getch()) != EOF) {
             if(s[i] > 'a' && s[i] < 'z') {
                 continue;
@@ -168,7 +168,7 @@ int getop(char s[]) {
 
     if(c == '-') {
         while(isdigit(s[++i] = c = getch()));
-        if(i == 1) {
+        if(i == 1) { /* зачем здесь эта проверка? */
             ungetch(c);
             return '-';
         }

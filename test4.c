@@ -1,14 +1,9 @@
 #include <stdio.h>
 
 int main() {
-    char s[100];
-    int c = getchar();
-    for(int i=0; i<100; i++) {
-        s[i]=0;
-    }
-    int i = 0;
-    while(c != 'p') {
-        s[i++] = c;
-    }
-    printf("%c\n", s[0]);
-ı
+    char a[3][3] = {{'a','b','c'},
+                    {'d','e','f'},
+                    {'g','h','\0'}};
+    printf("%s\n", a[1]);
+    return 0;
+}
