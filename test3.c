@@ -5,6 +5,7 @@
  
 #define   MAXOP 100
 #define   BUFSIZE 100
+#define   LETTERS 10
   
 #define   NUMBER '0'
 #define   HEAD 'H'
@@ -22,17 +23,23 @@ int       getop(char[]);
 int       getch(void);
 void      ungetch(int);
 
+struct    nl {
+          char l[LETTERS];
+          int  n[MAXOP];
+          };
+
 int main() {
     int i=0, y, h;
     int n;
     int p = 0; h = 0;
-    
-    int l = 97;
-    for(int i=0; i<10; i++) {
-        ln[i][0] = l++;
-        printf("%c\n", ln[i][0]);
+
+
+    struct nl letterNumber;
+    int aLetter = 97;
+    for(int i=0; i<LETTERS; i++) {
+        letterNumber.l[i] = aLetter++;
     }
-    printf("\n\n");
+    letterNumber.n[MAXOP] = {0};
 
     while((c = getch()) == ' ' || c == '\t') {
         ;
@@ -41,10 +48,9 @@ int main() {
     i = 0;
 
     if(s[0] >= 'a' && s[0] <= 'j') {
-        for(int i=0; i<10; i++) {
+        for(int i=0; i<LETTERS; i++) {
             printf("str 45 i=%d\n", i);
-            if(s[0] == ln[i][0]) {
-                n = i;
+            if(s[0] == letterNumber.l[i]) {
                 printf("str 48 n='%d'\n", n);
                 break;
             }
@@ -63,6 +69,8 @@ int main() {
                 printf("str 63\n");
                 printf("%s\n", s);
             }
+        } else {
+            ;
         }
     }
     int result = atof(s);
