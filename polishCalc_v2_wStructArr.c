@@ -3,10 +3,11 @@
 #include  <stdlib.h>
 #include  <math.h>
   
+#define   LETTERS 10
 #define   MAXOP 100
-#define   NUMBER '0'
 #define   MAXVAL 100
 #define   BUFSIZE 100
+#define   NUMBER '0'
  
 #define   HEAD 'H'
 #define   DUPLICATE 'D'
@@ -34,6 +35,22 @@ void      print(void);
 void      replace(void);
 void      power(void);
 
+struct    numberLetter {
+          char    l;
+          double  n;
+          };
+struct    numberLetter structArr[LETTERS] = {
+          'a', '\0',
+          'b', '\0',
+          'c', '\0',
+          'd', '\0',
+          'e', '\0',
+          'f', '\0',
+          'g', '\0',
+          'h', '\0',
+          'i', '\0',
+          'j', '\0'
+          };
 
 int main() {
     int type;
@@ -107,25 +124,9 @@ int main() {
     }
 }
 
-double pop(void) {
-    if(sp > 0) {
-        return val[--sp];
-    } else {
-        printf("ошибка: стек пуст\n");
-        return 0.0;
-    }
-}
-
-void push(double f) {
-    if(sp < MAXVAL) {
-        val[sp++]=f;
-    } else {
-        printf("ошибка: стек полон, %g не помещается\n", f);
-    }
-}
-
 int getop(char s[]) {
     int i, c;
+    int count = 0;
     c = ' ';
     while(c == ' ' || c == '\t') {
         c = getch();
@@ -141,12 +142,58 @@ int getop(char s[]) {
         return s[0];
     }
 
+    if(s[0] >= 'a' && s[0] <= 'j') {
+        for(i=0; i<LETTERS; i++) {
+            printf("str 147 i='%c'\n", structArr[i].l); /* debug */
+            if(s[0] == structArr[i].l) {
+                printf("str 149 count='%d'\n", count); /* debug */
+                break;
+            }
+        }
+        count = i;
+
+        if ((c=getch()) == '=') {
+            s[1] = c;
+            if(s[0] >= 'a' && s[0] <= 'j' && s[1] == '=') {
+                printf("str 158\n"); /* debug */
+                int i = 0;
+                
+                if(c == '-') {
+                    while(isdigit(s[++i] = c = getch()));
+                    if(i == 1) { /* зачем здесь эта проверка? */
+                        ungetch(c);
+                        return '-';
+                    }
+                }
+
+                if(isdigit(c)) {
+                    while(isdigit(s[i++] = c = getch()) != EOF) {
+                        printf("str 161: c='%c' i='%d'\n", s[i], i); /* debug */
+                        if(c == '\n') {
+                            s[i] = '\0';
+                            break;
+                        }
+                    }
+                }
+
+                if(c == '.')
+                    while(isdigit(s[++i] = c = getch()))
+                        ;
+                printf("str 167\n"); /* debug */
+                printf("%s\n", s); /* debug */
+            }
+        } else {
+            ;
+        }
+    }
+    printf("str 189 sA[count].l='%c', sA[count].n='%g',\n", structArr[count].l, structArr[count].n); /* debug */
+
     s[1] = '\0';
 
     i = 0;
     if(c == 'p' || c == 's') { /* Всю эту конструкцию нужно повторно осознать */
         while((s[++i] = c = getch()) != EOF) {
-            if(s[i] >= 'a' && s[i] <= 'z') {
+            if(s[i] > 'a' && s[i] < 'z') {
                 continue;
             } else {
                 ungetch(c);
@@ -164,6 +211,7 @@ int getop(char s[]) {
         return c;
 
     i = 0;
+
     if(c == '-') {
         while(isdigit(s[++i] = c = getch()));
         if(i == 1) { /* зачем здесь эта проверка? */
@@ -197,6 +245,23 @@ void ungetch(int c) {
         printf("ungetch: слишком много символов\n");
     else
         buf[bufp++] = c;
+}
+
+double pop(void) {
+    if(sp > 0) {
+        return val[--sp];
+    } else {
+        printf("ошибка: стек пуст\n");
+        return 0.0;
+    }
+}
+
+void push(double f) {
+    if(sp < MAXVAL) {
+        val[sp++]=f;
+    } else {
+        printf("ошибка: стек полон, %g не помещается\n", f);
+    }
 }
 
 void nline(void) {
