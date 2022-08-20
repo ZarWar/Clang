@@ -150,7 +150,7 @@ int getop(char s[]) {
                 break;
             }
         }
-        str;
+         printf("str 153\n");
         printf("str 153\n");
         count = i;
 
@@ -167,12 +167,12 @@ int getop(char s[]) {
                         return '-';
                     }
                 }
-
+str;
                 if(isdigit(c)) {
                     while(isdigit(s[i++] = c = getch()) != EOF) {
                         printf("str 161: c='%c' i='%d'\n", s[i], i); /* debug */
                         if(c == '\n') {
-                            str;
+                             printf("str 175\n");
                             s[i] = '\0';
                             break;
                         }

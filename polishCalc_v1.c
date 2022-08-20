@@ -22,8 +22,7 @@ char      s[MAXOP];
 char      buf[BUFSIZE];
 double    val[MAXVAL];
    
-int       getop1(char[]);
-int       getop2(char[]);
+int       getop(char[]);
 int       getch(void);
 double    head(void);
 double    pop(void);
