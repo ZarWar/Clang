@@ -2,6 +2,8 @@
 #include  <ctype.h>
 #include  <stdlib.h>
 #include  <math.h>
+
+
  
 #define   MAXOP 100
 #define   BUFSIZE 100
@@ -49,77 +51,84 @@ int main() {
         ;
     }
     s[0] = c;
+    printf("str 52 '%c'\n", s[0]);
 
     int i;
     if(s[0] >= 'a' && s[0] <= 'j') {
         for(i=0; i<LETTERS; i++) {
-            printf("str 58 i=%c\n", structArr[i].l);
+            count = i;
+            printf("str 57 i=%c\n", structArr[i].l);
             if(s[0] == structArr[i].l) {
-                printf("str 60 count='%d'\n", count);
+                printf("str 59 count='%d'\n", count);
                 break;
             }
         }
-        count = i;
 
         if ((c=getch()) == '=') {
             s[1] = c;
             if(s[0] >= 'a' && s[0] <= 'j' && s[1] == '=') {
                 printf("str 67\n");
                 int i = 0;
+                // s[0] = '1';
                 // ungetch(c);
-                // c = getch();
                 printf("str 71 '%c'\n", c);
 
                 while((c = getch()) == ' ' || c == '\t') {
+                    printf("str 75\n");
                     ;
                 }
                 
+                printf("str 79\n");
                 if(!isdigit(c) && c != '.' && c != '-')
+                    printf("str 81\n");
                     ;
 
                 if((c=getch()) == '-') {
+                    printf("str 85\n");
                     while(isdigit(s[++i] = c = getch()));
                     if(i == 1) { /* зачем здесь эта проверка? */
                         ungetch(c);
                     }
                 }
 
+
+
+
+
+                printf("str 96\n");
                 if(isdigit(c)) {
-                    while(isdigit(s[++i] = c = getch()) != EOF) {
-                        printf("str 69: c='%c' i='%d'\n", s[i], i);
+                    i = 0;
+                    printf("str 95 s[0]='%c', s[1]='%c', s[2]='%c'\n", s[0], s[1], s[2]);
+                    while(isdigit(s[i++] = c = getch()) != EOF) {
+                        printf("str 96: c='%c' i='%d'\n", s[i], i);
                         if(c == '\n') {
-                            s[i] = '\0';
+                            s[--i] = '\0';
                             break;
                         }
                     }
                 }
                 
-
-                
-                printf("str 75\n");
-                printf("%s\n", s);
+                printf("str 106 '%s'\n", s);
             }
         } else {
             ;
         }
     }
     structArr[count].n = atof(s);
-    printf("str 83 sA[count].l='%c', sA[count].n='%g',\n", structArr[count].l, structArr[count].n);
+    printf("str 110 sA[count].l='%c', sA[count].n='%g',\n", structArr[count].l, structArr[count].n);
 
-    if(!isdigit(c) && c != '.' && c != '-')
-        return c;
+    // if(!isdigit(c) && c != '.' && c != '-')
+    //     return c;
 
-    i = 0;
-    if(c == '-') {
-        while(isdigit(s[++i] = c = getch()));
-        if(i == 1) { /* зачем здесь эта проверка? */
-            ungetch(c);
-            return '-';
-        }
-    }
+    // i = 0;
 
-
-
+    // if(c == '-') {
+    //     while(isdigit(s[++i] = c = getch()));
+    //     if(i == 1) { /* зачем здесь эта проверка? */
+    //         ungetch(c);
+    //         return '-';
+    //     }
+    // }
 
     return NUMBER;
 }
