@@ -150,14 +150,11 @@ int getop(char s[]) {
                 break;
             }
         }
-         printf("str 153\n");
-        printf("str 153\n");
         count = i;
-
         if ((c=getch()) == '=') {
             s[1] = c;
             if(s[0] >= 'a' && s[0] <= 'j' && s[1] == '=') {
-                printf("str 158\n"); /* debug */
+                printf("str 160\n"); /* debug */
                 int i = 0;
                 
                 if(c == '-') {
@@ -167,12 +164,11 @@ int getop(char s[]) {
                         return '-';
                     }
                 }
-str;
                 if(isdigit(c)) {
                     while(isdigit(s[i++] = c = getch()) != EOF) {
-                        printf("str 161: c='%c' i='%d'\n", s[i], i); /* debug */
+                        printf("str 172: c='%c' i='%d'\n", s[i], i); /* debug */
                         if(c == '\n') {
-                             printf("str 175\n");
+                             printf("str 174\n");
                             s[i] = '\0';
                             break;
                         }
@@ -182,14 +178,14 @@ str;
                 if(c == '.')
                     while(isdigit(s[++i] = c = getch()))
                         ;
-                printf("str 167\n"); /* debug */
+                printf("str 184\n"); /* debug */
                 printf("%s\n", s); /* debug */
             }
         } else {
             ;
         }
     }
-    printf("str 189 sA[count].l='%c', sA[count].n='%g',\n", structArr[count].l, structArr[count].n); /* debug */
+    printf("str 191 sA[count].l='%c', sA[count].n='%g',\n", structArr[count].l, structArr[count].n); /* debug */
 
     s[1] = '\0';
 
