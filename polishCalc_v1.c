@@ -166,7 +166,7 @@ int getop(char s[]) {
     i = 0;
     if(c == '-') {
         while(isdigit(s[++i] = c = getch()));
-        if(i == 1) { /* зачем здесь эта проверка? */
+        if(i == 1) {
             ungetch(c);
             return '-';
         }
