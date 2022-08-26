@@ -1,3 +1,5 @@
+//  strDebug.pl --file=polishCalc_v2_wStructArr.c && gcc -o ./polishCalc_v2_wStructArr_O ./polishCalc_v2_wStructArr.c && ./polishCalc_v2_wStructArr_O
+
 #include  <stdio.h>
 #include  <ctype.h>
 #include  <stdlib.h>
@@ -8,6 +10,7 @@
 #define   MAXVAL 100
 #define   BUFSIZE 100
 #define   NUMBER '0'
+#define   STRUCT 'T'
  
 #define   HEAD 'H'
 #define   DUPLICATE 'D'
@@ -18,22 +21,27 @@
 #define   SINUS 'S'
  
 int       sp = 0;
+int       count;
 int       bufp = 0;
-char      s[MAXOP];
-char      buf[BUFSIZE];
-double    val[MAXVAL];
-   
-int       getop(char[]);
-int       getch(void);
-double    head(void);
-double    pop(void);
-void      ungetch(int);
-void      push(double);
-void      nline(void);
-void      clear(void);
-void      print(void);
-void      replace(void);
-void      power(void);
+char      c = ' '; 
+char      s         [MAXOP];
+char      operators [MAXOP];
+char      operands  [MAXOP];
+char      buf       [BUFSIZE];
+double    val       [MAXVAL];
+    
+int       getop     (char[]);
+int       getch     (void);
+double    head      (void);
+double    pop       (void);
+char      compare   (char c);
+void      ungetch   (int);
+void      push      (double);
+void      nline     (void);
+void      clear     (void);
+void      print     (void);
+void      replace   (void);
+void      power     (void);
 
 struct    numberLetter {
           char    l;
@@ -92,6 +100,8 @@ int main() {
                 printf("ошибка: деление на нуль \\ \n");
                 break;
             }
+        case '=':
+            break;
         case HEAD:
             printf("HEAD = %f\n", head());
             break;
@@ -125,14 +135,12 @@ int main() {
 }
 
 int getop(char s[]) {
-    int i, c;
-    int count = 0;
-    c = ' ';
-    while(c == ' ' || c == '\t') {
-        c = getch();
+    int i = 0;
+    while((c = getch()) == ' ' || c == '\t') {
+        ;
     }
-    s[0]=c;
-    
+    s[0] = c;
+
     if(
         s[0] == HEAD ||
         s[0] == DUPLICATE ||
@@ -141,58 +149,12 @@ int getop(char s[]) {
     ) {
         return s[0];
     }
-
-    if(s[0] >= 'a' && s[0] <= 'j') {
-        for(i=0; i<LETTERS; i++) {
-            printf("str 147 i='%c'\n", structArr[i].l); /* debug */
-            if(s[0] == structArr[i].l) {
-                printf("str 149 count='%d'\n", count); /* debug */
-                break;
-            }
-        }
-        count = i;
-        if ((c=getch()) == '=') {
-            s[1] = c;
-            if(s[0] >= 'a' && s[0] <= 'j' && s[1] == '=') {
-                printf("str 160\n"); /* debug */
-                int i = 0;
-                
-                if(c == '-') {
-                    while(isdigit(s[++i] = c = getch()));
-                    if(i == 1) { /* зачем здесь эта проверка? */
-                        ungetch(c);
-                        return '-';
-                    }
-                }
-                if(isdigit(c)) {
-                    while(isdigit(s[i++] = c = getch()) != EOF) {
-                        printf("str 172: c='%c' i='%d'\n", s[i], i); /* debug */
-                        if(c == '\n') {
-                             printf("str 174\n");
-                            s[i] = '\0';
-                            break;
-                        }
-                    }
-                }
-
-                if(c == '.')
-                    while(isdigit(s[++i] = c = getch()))
-                        ;
-                printf("str 184\n"); /* debug */
-                printf("%s\n", s); /* debug */
-            }
-        } else {
-            ;
-        }
-    }
-    printf("str 191 sA[count].l='%c', sA[count].n='%g',\n", structArr[count].l, structArr[count].n); /* debug */
-
     s[1] = '\0';
 
     i = 0;
-    if(c == 'p' || c == 's') { /* Всю эту конструкцию нужно повторно осознать */
+    if(c == 'p' || c == 's') {
         while((s[++i] = c = getch()) != EOF) {
-            if(s[i] > 'a' && s[i] < 'z') {
+            if(s[i] >= 'a' && s[i] <= 'z') {
                 continue;
             } else {
                 ungetch(c);
@@ -206,14 +168,68 @@ int getop(char s[]) {
         }
     }
 
+    i = 0;
+    count = 0;
+    if(s[0] >= 'a' && s[0] <= 'j') {
+        for(i=0; i<LETTERS; i++) {
+            count = i;
+            if(s[0] == structArr[i].l) {
+                break;
+            }
+        }
+        if ((c=getch()) == '=') {
+            s[1] = c;
+            if(s[0] >= 'a' && s[0] <= 'j' && s[1] == '=') {
+                int i = 0;
+                while((c = getch()) == ' ' || c == '\t') {
+                    ;
+                }
+
+                if(!isdigit(c) && c != '.' && c != '-')
+                    ;
+
+                if(c == '-') {
+                    for(int i=0; i<10; i++) {
+                        s[i] = '\0';
+                    }
+                    i = 0;
+                    while(isdigit(s[i++] = c) != EOF) {
+                        c = getch();
+                        if(c == '\n') {
+                            s[i] = '\0';
+                            structArr[count].n = atof(s);
+                            break;
+                        }
+                    }
+                }
+
+                if(isdigit(c)) {
+                    for(int i=0; i<10; i++) {
+                        s[i] = '\0';
+                    }
+                    i = 0;
+                    while(isdigit(s[i++] = c) != EOF) {
+                        c = getch();
+                        if(c == '\n') {
+                            s[i] = '\0';
+                            structArr[count].n = atof(s);
+                            break;
+                        }
+                    }
+                }
+            }
+        } else if (c == ' ') {
+            return STRUCT;
+        }
+    }
+
     if(!isdigit(c) && c != '.' && c != '-')
         return c;
 
     i = 0;
-
     if(c == '-') {
         while(isdigit(s[++i] = c = getch()));
-        if(i == 1) { /* зачем здесь эта проверка? */
+        if(i == 1) {
             ungetch(c);
             return '-';
         }
@@ -223,7 +239,6 @@ int getop(char s[]) {
         while(isdigit(s[++i] = c = getch()))
             ;
     }
-
     if(c == '.')
         while(isdigit(s[++i] = c = getch()))
             ;
@@ -231,6 +246,8 @@ int getop(char s[]) {
     
     if(c != EOF)
         ungetch(c);
+
+    printf("str 250 sA[count].l='%c', sA[count].n='%g',\n", structArr[count].l, structArr[count].n);
 
     return NUMBER;
 }
@@ -302,4 +319,12 @@ void power(void) {
         op1 *= temp;
     }
     push(op1);
+}
+
+char compare (char c) {
+    if(c>='a' && c<='j') {
+        return c;
+    } else {
+        return 0;
+    }
 }
