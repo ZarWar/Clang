@@ -11,6 +11,7 @@
 #define   BUFSIZE 100
 #define   NUMBER '0'
 #define   STRUCT 'T'
+#define   PRINTSTRUCT 'K'
  
 #define   HEAD 'H'
 #define   DUPLICATE 'D'
@@ -20,21 +21,21 @@
 #define   POWER 'W'
 #define   SINUS 'S'
  
-int       sp = 0;
-int       count;
-int       bufp = 0;
 char      c = ' '; 
+int       sp = 0;
+int       bufp = 0;
+int       count = 0;
 char      s         [MAXOP];
 char      operators [MAXOP];
 char      operands  [MAXOP];
 char      buf       [BUFSIZE];
 double    val       [MAXVAL];
     
+char      compare   (char c);
 int       getop     (char[]);
 int       getch     (void);
 double    head      (void);
 double    pop       (void);
-char      compare   (char c);
 void      ungetch   (int);
 void      push      (double);
 void      nline     (void);
@@ -42,6 +43,7 @@ void      clear     (void);
 void      print     (void);
 void      replace   (void);
 void      power     (void);
+void      printStruct(void);
 
 struct    numberLetter {
           char    l;
@@ -67,6 +69,9 @@ int main() {
         switch(type) {
         case NUMBER:
             push(atof(s));
+            break;
+        case STRUCT:
+            push(structArr[count].n);
             break;
         case '+':
             push(pop() + pop());
@@ -123,6 +128,9 @@ int main() {
         case SINUS:
             push(sin(pop()));
             break;
+        case PRINTSTRUCT:
+            printStruct();
+            break;
         case '\n':
             break;
         
@@ -167,10 +175,12 @@ int getop(char s[]) {
             return SINUS;
         }
     }
+    // printf("str 178: count = '%d'\n", count);
 
     i = 0;
-    count = 0;
+    // printf("str 181: count = '%d'\n", count);
     if(s[0] >= 'a' && s[0] <= 'j') {
+        count = 0;
         for(i=0; i<LETTERS; i++) {
             count = i;
             if(s[0] == structArr[i].l) {
@@ -218,10 +228,12 @@ int getop(char s[]) {
                     }
                 }
             }
-        } else if (c == ' ') {
+        } else if (c != '=') {
+            printf("str 232\n");
             return STRUCT;
         }
     }
+    // printf("str 236: count = '%d'\n", count);
 
     if(!isdigit(c) && c != '.' && c != '-')
         return c;
@@ -247,7 +259,7 @@ int getop(char s[]) {
     if(c != EOF)
         ungetch(c);
 
-    printf("str 250 sA[count].l='%c', sA[count].n='%g',\n", structArr[count].l, structArr[count].n);
+    printf("str 262 sA[count].l='%c', sA[count].n='%g',\n", structArr[count].l, structArr[count].n);
 
     return NUMBER;
 }
@@ -326,5 +338,16 @@ char compare (char c) {
         return c;
     } else {
         return 0;
+    }
+}
+
+// void printStruct(void) {
+//         printf("str 341 sA[count].l='%c', sA[count].n='%g',\n", structArr[count].l, structArr[count].n);
+// }
+
+void printStruct(void) {
+    printf("printStruct(): вывод всех элементов массива структур\n");
+    for(int i=0; i<LETTERS; i++) {
+        printf("   sA[i].l='%c', sA[i].n='%g',\n", structArr[i].l, structArr[i].n);
     }
 }
