@@ -1,4 +1,4 @@
-//  strDebug.pl --file=polishCalc_v2_wStructArr.c && gcc -o ./polishCalc_v2_wStructArr_O ./polishCalc_v2_wStructArr.c && ./polishCalc_v2_wStructArr_O
+//  strDebug.pl --file=test.c && gcc -o ./test_O ./test.c && ./test_O
 
 #include  <stdio.h>
 #include  <ctype.h>
@@ -9,14 +9,14 @@
 #define   MAXOP 100
 #define   MAXVAL 100
 #define   BUFSIZE 100
-
 #define   NUMBER '0'
 #define   STRUCT 'T'
+#define   PRINTSTRUCT 'K'
+ 
 #define   HEAD 'H'
 #define   DUPLICATE 'D'
 #define   REPLACE 'R'
 #define   PRINT 'P'
-#define   PRINTSTRUCT 'K'
 #define   CLEAR 'C'
 #define   POWER 'W'
 #define   SINUS 'S'
@@ -25,25 +25,27 @@ char      c = ' ';
 int       sp = 0;
 int       bufp = 0;
 int       count = 0;
-char      s           [MAXOP];
-char      operators   [MAXOP];
-char      operands    [MAXOP];
-char      buf         [BUFSIZE];
-double    val         [MAXVAL];
-    
-char      compare     (char c);
-int       getop       (char[]);
-int       getch       (void);
-double    head        (void);
-double    pop         (void);
-void      ungetch     (int);
-void      push        (double);
-void      nline       (void);
-void      clear       (void);
-void      print       (void);
-void      replace     (void);
-void      power       (void);
-void      printStruct (void);
+char      s            [MAXOP];
+char      operators    [MAXOP];
+char      operands     [MAXOP];
+char      buf          [BUFSIZE];
+double    val          [MAXVAL];
+       
+char      compare      (char c);
+int       getop        (char[]);
+int       getch        (void);
+double    head         (void);
+double    pop          (void);
+void      ungetch      (int);
+void      push         (double);
+void      nline        (void);
+void      clear        (void);
+void      print        (void);
+void      replace      (void);
+void      power        (void);
+void      printStruct  (void);
+int       getopStruct  (char s[]);
+int       mainStruct   (char s[]);
 
 struct    numberLetter {
           char    l;
@@ -135,7 +137,10 @@ int main() {
             break;
         
         default:
-            printf("ошибка: неизвестная операция '%s'\n", s);
+            if(s[0] >= 'a' && s[0] <= 'j') {
+                break;
+            }
+            printf("ошибка: неизвестная операция %s\n", s);
             break;
             return 0;
         }
@@ -186,46 +191,7 @@ int getop(char s[]) {
             }
         }
         if ((c=getch()) == '=') {
-            s[1] = c;
-            if(s[0] >= 'a' && s[0] <= 'j' && s[1] == '=') {
-                int i = 0;
-                while((c = getch()) == ' ' || c == '\t') {
-                    ;
-                }
-
-                if(!isdigit(c) && c != '.' && c != '-')
-                    ;
-
-                if(c == '-') {
-                    for(int i=0; i<10; i++) {
-                        s[i] = '\0';
-                    }
-                    i = 0;
-                    while(isdigit(s[i++] = c) != EOF) {
-                        c = getch();
-                        if(c == '\n') {
-                            s[i] = '\0';
-                            structArr[count].n = atof(s);
-                            break;
-                        }
-                    }
-                }
-
-                if(isdigit(c)) {
-                    for(int i=0; i<10; i++) {
-                        s[i] = '\0';
-                    }
-                    i = 0;
-                    while(isdigit(s[i++] = c) != EOF) {
-                        c = getch();
-                        if(c == '\n') {
-                            s[i] = '\0';
-                            structArr[count].n = atof(s);
-                            break;
-                        }
-                    }
-                }
-            }
+            return mainStruct(getopStruct(s));
         } else if (c != '=') {
             return STRUCT;
         }
@@ -247,7 +213,6 @@ int getop(char s[]) {
         while(isdigit(s[++i] = c = getch()))
             ;
     }
-
     if(c == '.')
         while(isdigit(s[++i] = c = getch()))
             ;
@@ -311,12 +276,11 @@ void print(void) {
     }
 }
 
-void printStruct(void) {
-    printf("printStruct(): вывод всех элементов массива структур\n");
-    for(int i=0; i<LETTERS; i++) {
-        printf("   sA[i].l='%c', sA[i].n='%g',\n", structArr[i].l, structArr[i].n);
-    }
-}
+// void (void) {
+//     val[sp-1] ^= val[sp-2];
+//     val[sp-1] ^= val[sp-2];
+//     val[sp-2] ^= val[sp-1];
+// }
 
 void replace(void) {
     double temp = val[sp-1];
@@ -341,4 +305,166 @@ char compare (char c) {
     } else {
         return 0;
     }
+}
+
+// void printStruct(void) {
+//         printf("str 341 sA[count].l='%c', sA[count].n='%g',\n", structArr[count].l, structArr[count].n);
+// }
+
+void printStruct(void) {
+    printf("printStruct(): вывод всех элементов массива структур\n");
+    for(int i=0; i<LETTERS; i++) {
+        printf("   sA[i].l='%c', sA[i].n='%g',\n", structArr[i].l, structArr[i].n);
+    }
+}
+
+
+/* ========================================================================================== */
+
+
+int getopStruct(char s[]) {
+    int i, c;
+    c = ' ';
+    while(c == ' ' || c == '\t') {
+        c = getch();
+    }
+    s[0]=c;
+    
+    s[1] = '\0';
+
+    i = 0;
+    if(c == 'p' || c == 's') {
+        while((s[++i] = c = getch()) != EOF) {
+            if(s[i] >= 'a' && s[i] <= 'z') {
+                continue;
+            } else {
+                ungetch(c);
+                break;
+            }
+        }
+        if(s[0] == 'p' && s[1] == 'o' && s[2] == 'w') {
+            return POWER;
+        } else if (s[0] == 's' && s[1] == 'i' && s[2] == 'n') {
+            return SINUS;
+        }
+    }
+
+    if(!isdigit(c) && c != '.' && c != '-')
+        return c;
+
+    i = 0;
+    if(c == '-') {
+        while(isdigit(s[++i] = c = getch()));
+        if(i == 1) {
+            ungetch(c);
+            return '-';
+        }
+    }
+
+    if(isdigit(c)) {
+        while(isdigit(s[++i] = c = getch()))
+            if(c == '\n') {
+                s[i] = '\0';
+                return (structArr[count].n = atof(s));
+                break;
+            }
+        }
+
+    if(c == '.')
+        while(isdigit(s[++i] = c = getch()))
+            if(c == '\n') {
+                s[i] = '\0';
+                return (structArr[count].n = atof(s));
+                break;
+            }
+    s[i] = '\0';
+    
+    if(c != EOF)
+        ungetch(c);
+
+    return 0;
+}
+
+int mainStruct(char s[]) {
+    int type;
+    double op1, op2, type2;
+    while((type = getopStruct(s)) != EOF) { 
+        switch(type) {
+        case NUMBER:
+            push(structArr[count].n);
+            break;
+        case STRUCT:
+            push(structArr[count].n);
+            break;
+        case '+':
+            push(pop() + pop());
+            break;
+        case '*':
+            push(pop() * pop());
+            break;
+        case '-':
+            op2 = pop();
+            push(pop() - op2);
+            break;
+        case '%':
+            op2 = pop();
+            op1 = pop();
+            if(op2 != 0.0) {
+                int op3 = op1 / op2;
+                double op4 = op1 - (op3 * op2);
+                push(op4);
+                break;
+            } else {
+                printf("ошибка: модуль от нуля %c\n", '%');
+                break;
+            }
+        case '/':
+            op2 = pop();
+            if(op2 != 0.0) {
+                push(pop() / op2);
+                break;
+            } else {
+                pop();
+                printf("ошибка: деление на нуль \\ \n");
+                break;
+            }
+        case '=':
+            break;
+        case HEAD:
+            printf("HEAD = %f\n", head());
+            break;
+        case DUPLICATE:
+            push(head());
+            break;
+        case CLEAR:
+            clear();
+            break;
+        case PRINT:
+            print();
+            break;
+        case REPLACE:
+            replace();
+            break;
+        case POWER:
+            power();
+            break;
+        case SINUS:
+            push(sin(pop()));
+            break;
+        case PRINTSTRUCT:
+            printStruct();
+            break;
+        case '\n':
+            break;
+        
+        default:
+            if(s[0] >= 'a' && s[0] <= 'j') {
+                break;
+            }
+            printf("ошибка: неизвестная операция %s\n", s);
+            break;
+            return 0;
+        }
+    }
+    return 0;
 }

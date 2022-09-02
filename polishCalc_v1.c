@@ -34,7 +34,6 @@ void      print(void);
 void      replace(void);
 void      power(void);
 
-
 int main() {
     int type;
     double op1, op2, type2;
