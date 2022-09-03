@@ -1,76 +1,92 @@
-#include  <stdio.h>
-#include  <ctype.h>
-#include  <stdlib.h>
-#include  <math.h>
- 
-#define   MAXOP 100
-#define   BUFSIZE 100
-  
-#define   HEAD 'H'
-#define   DUPLICATE 'D'
-#define   CLEAR 'C'
-#define   REPLACE 'R'
-  
-int       c = ' ';
-int       bufp = 0;
-char      s[MAXOP];
-char      buf[BUFSIZE];
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-int       getch(void);  
-void      ungetch(int);
+#define BUFFER 10
+
+char *arr[BUFFER][10];
+char *blockArr[BUFFER];
+int b = 0;
+int limit = 4;
+int arrCounter = 1;
+
+char* getString(void);
+void reverseString(char s[]);
+void printArr(char blockArr[]);
+
+
 
 int main() {
-    int i, y, c;
     int p = 0;
-    while((c = getch()) == ' ' || c == '\t') {
-        printf("строка 20: getch()==%d, '%c'\n", c, c);
+
+    // char *block2 = (char*)calloc(BUFFER, sizeof(char));
+    // block2 = "asdf\0";
+    // blockArr[0] = block2;
+    // arr[2][1] = blockArr[0];
+    // printf("%s\n", blockArr[0]);
+    // printf("%s\n", arr[2][1]);
+    // printf("%s\n", arr[2][0]);
+    while(p < limit) {
+        p++;
+        char *block = getString();
+        reverseString(blockArr[b]);
+        b++;
     }
 
-    s[0]=c;
-    printf("строка 23: s[0]==%d, '%c'\n", s[0], s[0]);
-    // s[1] = '\0';
-
-    if(
-        s[0] == HEAD ||
-        s[0] == DUPLICATE ||
-        s[0] == CLEAR ||
-        s[0] == REPLACE
-    ) {
-        printf("строка 35: s[0]==%d, '%c'\n", s[0], s[0]);
+    for(int i=0; i<limit; i++) {
+        printf("i=[%d] - %s\n", i, blockArr[i]);
     }
 
-    if(s[0] >= 'a' && s[0] <= 'j') {
-        p = 0;
-        printf("попал в условие с переменной\n");
-        // c = getch();
-        while((c=getch()) == ' ' || c == '\t') { /* 'while' для хераченья сколько угодно пробелов между символом '=' и числами в момент присвоения переменной значения */
-            ;
-        }
-        if (c == '=') {
-            // s[1] = '\0';
-            printf("строка 51, попал в условие getch() == '='\n");
+    return 0;
+}
+
+char* getString(void) {
+    char c;
+    int i = 0;
+    int count = 1;
+
+    char *block = (char*)calloc(BUFFER, sizeof(char));
+
+    while((c = getchar()) != EOF && c != '\n') {
+        block[i++] = c;
+
+        if(block[0] == ' ' || block[0] == '\t') {
             i = 0;
-            if(isdigit(c)) {
-                while(isdigit(s[++i] = c = getch())) {
-                    ;
-                    for (y=0; y<10; y++) {
-                        printf("строка 66: s[%d], y=%d\n", s[y], y);
-                    }
-                }
-            } else {
-                ;
-            }
         }
+
+        if(i >= (BUFFER * count)) {
+            count *= 2;
+            block = realloc(block, BUFFER * count);
+        }
+
+        // if(c == '\n') {
+        //     block[i] = '\0';
+        //     blockArr[b] = block;
+        //     printf("str 60\n");
+        // }
+    }
+
+    block[i] = '\0';
+    blockArr[b] = block;
+
+    if(i >= (BUFFER * count)) {
+        block = realloc(block, BUFFER * count + 1);
+    }
+
+    return blockArr[b];
+}
+
+void reverseString(char *block) {
+    int lenght = strlen(block);
+    int doubleLenght = lenght * 2;
+
+    block = realloc(block, doubleLenght);
+
+    for(int i = 0; i < lenght; i++) {
+        block[--doubleLenght] = block[i];
     }
 }
 
-int getch(void) {
-    return(bufp > 0) ? buf[--bufp]: getch();
-}
-
-void ungetch(int c) {
-    if(bufp >= BUFSIZE)
-        printf("ungetch: слишком много символов\n");
-    else
-        buf[bufp++] = c;
+void printArr(char bloackArr[]) {
+    
 }

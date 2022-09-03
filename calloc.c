@@ -26,6 +26,10 @@ char* getString(void) {
     while((c = getchar()) != EOF && c != '\n') {
         block[i++] = c;
 
+        if(block[0] == ' ' || block[0] == '\t') {
+            i = 0;
+        }
+
         if(i >= (BUFFER * count)) {
             count *= 2;
             block = realloc(block, BUFFER * count);
