@@ -1,3 +1,8 @@
+// нужно использовать проверку if(c == EOF) {
+// eof = 1;
+// }
+// и создать глобальную переменную int eof = 0;
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

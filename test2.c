@@ -9,10 +9,11 @@ char *blockArr[BUFFER];
 int b = 0;
 int limit = 4;
 int arrCounter = 1;
+int mostArr;
 
 char* getString(void);
-void reverseString(char s[]);
-void printArr(char blockArr[]);
+void reverseString(char *blockArr);
+void printArr(char *blockArr);
 
 
 
@@ -26,6 +27,9 @@ int main() {
     // printf("%s\n", blockArr[0]);
     // printf("%s\n", arr[2][1]);
     // printf("%s\n", arr[2][0]);
+    // printArr(blockArr[0]);
+
+
     while(p < limit) {
         p++;
         char *block = getString();
@@ -36,6 +40,13 @@ int main() {
     for(int i=0; i<limit; i++) {
         printf("i=[%d] - %s\n", i, blockArr[i]);
     }
+
+    int lenght = strlen(blockArr[0]);
+    printf("%d\n", lenght);
+
+    printArr(*blockArr);
+
+    printf("samijArr = %d\n", mostArr);
 
     return 0;
 }
@@ -76,6 +87,20 @@ char* getString(void) {
     return blockArr[b];
 }
 
+// void reverseString(char *blockArr) {
+//     for(int y=0; y<limit; y++) {
+
+//         int lenght = strlen(&blockArr[y]);
+//         int doubleLenght = lenght * 2;
+
+//         blockArr[y] = realloc(&blockArr[y], doubleLenght);
+
+//         for(int i = 0; i < lenght; i++) {
+//             blockArr[--doubleLenght] = blockArr[i];
+//         }
+//     }
+// }
+
 void reverseString(char *block) {
     int lenght = strlen(block);
     int doubleLenght = lenght * 2;
@@ -87,6 +112,14 @@ void reverseString(char *block) {
     }
 }
 
-void printArr(char bloackArr[]) {
-    
+void printArr(char *blockArr) {
+    mostArr = 0;
+    // for(int i=0; i<limit-1; i++) {
+    //     if((strlen(&blockArr[i])) > (strlen(&blockArr[i+1]))) {
+    //         samijArr = blockArr[i];
+    //     }
+    // }
+    printf("str 122: %lu\n", strlen(&blockArr[0]));
+
+    // return strlen(&blockArr[0]);
 }
