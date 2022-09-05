@@ -17,7 +17,48 @@ void printArr(char blockArr[]);
 
 
 int main() {
-    int p = 0;
+
+    int buffer = 4;
+    int H = 4;
+    int W = 5;
+
+    char **A = (char **)calloc(H, sizeof(char *));
+    for(int i=0; i<H; i++) {
+        A[i] = (char *)calloc(W, sizeof(char));
+    }
+
+
+    for(int i=0; i<H; i++) {
+        for(int j=0; j<W; j++) {
+            printf("%*d", 5, A[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\n");
+    printf("\n");
+
+    H++; 
+    A = realloc(A, H * (sizeof(char*)));
+    A[H-1] = (char *)calloc(W, sizeof(char));
+    A[H-1][2] = 5;
+    
+    A[4][4] = 5;
+
+
+
+    for(int i=0; i<H; i++) {
+        for(int j=0; j<W; j++) {
+            printf("%*d", 5, A[i][j]);
+        }
+        printf("\n");
+    }
+
+
+
+
+
+
 
     // char *block2 = (char*)calloc(BUFFER, sizeof(char));
     // block2 = "asdf\0";
@@ -26,16 +67,6 @@ int main() {
     // printf("%s\n", blockArr[0]);
     // printf("%s\n", arr[2][1]);
     // printf("%s\n", arr[2][0]);
-    while(p < limit) {
-        p++;
-        char *block = getString();
-        reverseString(blockArr[b]);
-        b++;
-    }
-
-    for(int i=0; i<limit; i++) {
-        printf("i=[%d] - %s\n", i, blockArr[i]);
-    }
 
     return 0;
 }
