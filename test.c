@@ -27,6 +27,10 @@ int main() {
     int count = 1;
     int H = 5;
     int W = 1;
+    int sizeArr = 0;
+
+    char arr[5] = {'\0'};
+    int y = 0;
 
     char *block = (char*)calloc(BUFFER, sizeof(char));
 
@@ -51,12 +55,16 @@ int main() {
             c = getch();
             if(c == '\n') {
                 block[--i] = '\0';
+                twoDarr[countArr++] = block;
+                printf("str 59: %s\n", block);
                 break;
             } else {
-                countArr++;
                 block[i++] = c;
                 ungetch(c);
                 block[--i] = '\0';
+                twoDarr[countArr++] = block;
+                i = 0;
+                printf("str 66: %s\n", block);
             }
         }
     }
@@ -65,23 +73,22 @@ int main() {
         block = realloc(block, BUFFER * count + 1);
     }
 
-    int lenght = strlen(block);
-    int doubleLenght = lenght * 2;
+    // int lenght = strlen(block);
+    // int doubleLenght = lenght * 2;
 
-    block = realloc(block, doubleLenght);
+    // twoDarr = realloc(twoDarr, doubleLenght);
 
-    for(int i = 0; i < lenght; i++) {
-        block[--doubleLenght] = block[i];
-    }
+    // for(int i = 0; i < lenght; i++) {
+    //     twoDarr[--doubleLenght] = twoDarr[i];
+    // }
 
     // for(int i = 0; i < lenght; i++) {
     //     block[--doubleLenght] = block[i];
     // }
 
-    twoDarr[countArr] = block;
 
-    for(int i=0; i<countArr; i++) {
-        printf("%s\n", twoDarr[countArr++]);
+    for(int i=0; i<=countArr; i++) {
+        printf("%s\n", twoDarr[i]);
     }
 
     return 0;
