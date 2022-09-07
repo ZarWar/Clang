@@ -1,82 +1,70 @@
+// нужно использовать проверку if(c == EOF) {
+// eof = 1;
+// }
+// и создать глобальную переменную int eof = 0;
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define BUFFER 10
-
-char *arr[BUFFER][10];
-char *blockArr[BUFFER];
-int b = 0;
-int limit = 4;
-int arrCounter = 1;
-
-char* getString(void);
-void reverseString(char s[]);
-void printArr(char blockArr[]);
+#define BUFFER 4
+#define BUFSIZE 4
 
 
+char c;
+int eof = 0;
+int bufp = 0;
+int countArr = 0;
+char buf[BUFSIZE];
+
+// char* getString(void);
+// void reverseString(char s[]);
+void ungetch(int);
+int getch(void);
 
 int main() {
-    int p = 0;
-
-    // char *block2 = (char*)calloc(BUFFER, sizeof(char));
-    // block2 = "asdf\0";
-    // blockArr[0] = block2;
-    // arr[2][1] = blockArr[0];
-    // printf("%s\n", blockArr[0]);
-    // printf("%s\n", arr[2][1]);
-    // printf("%s\n", arr[2][0]);
-    while(p < limit) {
-        p++;
-        char *block = getString();
-        reverseString(blockArr[b]);
-        b++;
-    }
-
-    for(int i=0; i<limit; i++) {
-        printf("i=[%d] - %s\n", i, blockArr[i]);
-    }
-
-    return 0;
-}
-
-char* getString(void) {
-    char c;
     int i = 0;
     int count = 1;
+    int H = 5;
+    int W = 1;
 
     char *block = (char*)calloc(BUFFER, sizeof(char));
 
-    while((c = getchar()) != EOF && c != '\n') {
+    char **twoDarr = (char **)calloc(H, sizeof(char *));
+    for(int i=0; i<H; i++) {
+        twoDarr[i] = (char *)calloc(W, sizeof(char));
+    }
+
+    while((c = getch()) != EOF) {
         block[i++] = c;
 
-        if(block[0] == ' ' || block[0] == '\t') {
-            i = 0;
-        }
+        // if(block[0] == ' ' || block[0] == '\t') {
+        //     i = 0;
+        // }
 
         if(i >= (BUFFER * count)) {
             count *= 2;
             block = realloc(block, BUFFER * count);
         }
 
-        // if(c == '\n') {
-        //     block[i] = '\0';
-        //     blockArr[b] = block;
-        //     printf("str 60\n");
-        // }
+        if(c == '\n') {
+            c = getch();
+            if(c == '\n') {
+                block[--i] = '\0';
+                break;
+            } else {
+                countArr++;
+                block[i++] = c;
+                ungetch(c);
+                block[--i] = '\0';
+            }
+        }
     }
-
-    block[i] = '\0';
-    blockArr[b] = block;
 
     if(i >= (BUFFER * count)) {
         block = realloc(block, BUFFER * count + 1);
     }
 
-    return blockArr[b];
-}
-
-void reverseString(char *block) {
     int lenght = strlen(block);
     int doubleLenght = lenght * 2;
 
@@ -85,8 +73,69 @@ void reverseString(char *block) {
     for(int i = 0; i < lenght; i++) {
         block[--doubleLenght] = block[i];
     }
+
+    // for(int i = 0; i < lenght; i++) {
+    //     block[--doubleLenght] = block[i];
+    // }
+
+    twoDarr[countArr] = block;
+
+    for(int i=0; i<countArr; i++) {
+        printf("%s\n", twoDarr[countArr++]);
+    }
+
+    return 0;
 }
 
-void printArr(char bloackArr[]) {
-    
+// char* getString(void) {
+//     int i = 0;
+//     int count = 1;
+
+//     char *block = (char*)calloc(BUFFER, sizeof(char));
+
+//     while((c = getchar()) != EOF) {
+//         block[i++] = c;
+
+//         // if(block[0] == ' ' || block[0] == '\t') {
+//         //     i = 0;
+//         // }
+
+//         if(i >= (BUFFER * count)) {
+//             count *= 2;
+//             block = realloc(block, BUFFER * count);
+//         }
+//     }
+
+//     if(i >= (BUFFER * count)) {
+//         block = realloc(block, BUFFER * count + 1);
+//     }
+
+//     if(c == '\n') {
+//         block[--i] = '\0';
+//     }
+
+
+//     return block;
+// }
+
+// void reverseString(char *block) {
+//     int lenght = strlen(block);
+//     int doubleLenght = lenght * 2;
+
+//     block = realloc(block, doubleLenght);
+
+//     for(int i = 0; i < lenght; i++) {
+//         block[--doubleLenght] = block[i];
+//     }
+// }
+
+int getch(void) {
+    return(bufp > 0) ? buf[--bufp]: getchar();
+}
+
+void ungetch(int c) {
+    if(bufp >= BUFSIZE)
+        printf("ungetch: слишком много символов\n");
+    else
+        buf[bufp++] = c;
 }
