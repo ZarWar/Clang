@@ -1,148 +1,98 @@
-// нужно использовать проверку if(c == EOF) {
-// eof = 1;
-// }
-// и создать глобальную переменную int eof = 0;
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #define BUFFER 4
-#define BUFSIZE 4
-
-
-char c;
-int eof = 0;
-int bufp = 0;
-int countArr = 0;
-char buf[BUFSIZE];
-
-// char* getString(void);
-// void reverseString(char s[]);
-void ungetch(int);
-int getch(void);
 
 int main() {
     int i = 0;
-    int count = 1;
-    int H = 5;
-    int W = 1;
-    int sizeArr = 0;
-
-    char arr[5] = {'\0'};
     int y = 0;
 
-    char *block = (char*)calloc(BUFFER, sizeof(char));
+    char c, lastinputChar;
+    int H = 1;
+    int W = 4;
 
-    char **twoDarr = (char **)calloc(H, sizeof(char *));
+    int sizeArr = 0;
+
+    char **A = (char **)calloc(H, sizeof(char *));
+
     for(int i=0; i<H; i++) {
-        twoDarr[i] = (char *)calloc(W, sizeof(char));
+        A[i] = (char *)calloc(W, sizeof(char));
     }
 
-    while((c = getch()) != EOF) {
-        block[i++] = c;
-
-        // if(block[0] == ' ' || block[0] == '\t') {
-        //     i = 0;
-        // }
-
-        if(i >= (BUFFER * count)) {
-            count *= 2;
-            block = realloc(block, BUFFER * count);
-        }
+    i = 0;
+    while((c = getchar()) != EOF) {
+        lastinputChar = c;
 
         if(c == '\n') {
-            c = getch();
-            if(c == '\n') {
-                block[--i] = '\0';
-                twoDarr[countArr++] = block;
-                printf("str 59: %s\n", block);
-                break;
-            } else {
-                block[i++] = c;
-                ungetch(c);
-                block[--i] = '\0';
-                twoDarr[countArr++] = block;
-                i = 0;
-                printf("str 66: %s\n", block);
+            if(i >= W - 1) {
+                W += 1;
+                A[y] = (char *)realloc(A[y], W * sizeof(char));
             }
+            A[y][i++] = '\0';
+
+            W = 4;
+            i = 0;
+
+            if(y >= H - 1) {
+                H *= 2;
+                A = (char **)realloc(A, H * sizeof(char *));
+
+                for(int t = H / 2; t < H; t++) {
+                    A[t] = (char *)calloc(W, sizeof(char));
+                }
+            }
+
+            y++;
+            
+        } else {
+            if(i >= W - 1) {
+                W *= 2;
+                A[y] = (char *)realloc(A[y], W * sizeof(char));
+            }
+
+            A[y][i++] = c;
         }
     }
 
-    if(i >= (BUFFER * count)) {
-        block = realloc(block, BUFFER * count + 1);
+    if(i >= W - 1) {
+        W += 1;
+        A[y] = (char *)realloc(A[y], W * sizeof(char));
+    }
+    A[y][i++] = '\0';
+
+    int maxstrLen = 0;
+    for(i = 0; i < y; i++) {
+        if (maxstrLen < strlen(A[i])) {
+            maxstrLen = strlen(A[i]);
+        }
     }
 
-    // int lenght = strlen(block);
-    // int doubleLenght = lenght * 2;
+    int doubleLen = (maxstrLen + 1) * 2 - 1;
 
-    // twoDarr = realloc(twoDarr, doubleLenght);
+    for(i = 0; i < y; i++) {
+        A[i] = (char *)realloc(A[i], doubleLen * sizeof(char));
+        
+        int zaebal = strlen(A[i]);
+        while(zaebal < doubleLen - 1) {
+            A[i][zaebal++] = ' ';
+        }
 
-    // for(int i = 0; i < lenght; i++) {
-    //     twoDarr[--doubleLenght] = twoDarr[i];
-    // }
+        for(int u = 0; u < (doubleLen - 1) / 2; u++) {
+            A[i][doubleLen - u - 2] = A[i][u];
+        }
+        A[i][doubleLen - 1] = '\0';
+        
+        printf("%s\n", A[i]);
+    }
 
-    // for(int i = 0; i < lenght; i++) {
-    //     block[--doubleLenght] = block[i];
-    // }
-
-
-    for(int i=0; i<=countArr; i++) {
-        printf("%s\n", twoDarr[i]);
+    for(int r = y - 1; r >= 0; r--) {
+        printf("%s\n", A[r]);
     }
 
     return 0;
 }
 
-// char* getString(void) {
-//     int i = 0;
-//     int count = 1;
-
-//     char *block = (char*)calloc(BUFFER, sizeof(char));
-
-//     while((c = getchar()) != EOF) {
-//         block[i++] = c;
-
-//         // if(block[0] == ' ' || block[0] == '\t') {
-//         //     i = 0;
-//         // }
-
-//         if(i >= (BUFFER * count)) {
-//             count *= 2;
-//             block = realloc(block, BUFFER * count);
-//         }
-//     }
-
-//     if(i >= (BUFFER * count)) {
-//         block = realloc(block, BUFFER * count + 1);
-//     }
-
-//     if(c == '\n') {
-//         block[--i] = '\0';
-//     }
-
-
-//     return block;
-// }
-
-// void reverseString(char *block) {
-//     int lenght = strlen(block);
-//     int doubleLenght = lenght * 2;
-
-//     block = realloc(block, doubleLenght);
-
-//     for(int i = 0; i < lenght; i++) {
-//         block[--doubleLenght] = block[i];
-//     }
-// }
-
-int getch(void) {
-    return(bufp > 0) ? buf[--bufp]: getchar();
-}
-
-void ungetch(int c) {
-    if(bufp >= BUFSIZE)
-        printf("ungetch: слишком много символов\n");
-    else
-        buf[bufp++] = c;
-}
+// 1) в самой длинной строке избавляться от пробелов в конце
+// 2) переписать, чтобы не понадобилась вторая реаллокация (на 75 строке)
+// тоесть нужно сразу считать количество символов в строке

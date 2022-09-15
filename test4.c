@@ -21,42 +21,41 @@ int main() {
     int buffer = 4;
     int H = 5;
     int W = 4;
+    int i = 3;
+    int p = 3;
 
 
 
+    // char **A = (char **)calloc(H, sizeof(char *));
+    // for(int i = 0; i < H; i++) {
+    //     A[i] = (char *)calloc(W, sizeof(char));
+    // }
 
+    // A[1][2] = 5;
 
+    // for(int i = 0; i < H; i++) {
+    //     for(int j = 0; j < W; j++) {
+    //         printf("%*d", 5, A[i][j]);
+    //     }
+    //     printf("\n");
+    // }
 
-    char **A = (char **)calloc(H, sizeof(char *));
-    for(int i = 0; i < H; i++) {
-        A[i] = (char *)calloc(W, sizeof(char));
-    }
+    // printf("\n");
+    // printf("\n");
+    // printf("\n");
 
-    A[1][2] = 5;
+    // H += 1;
+    // A = realloc(A, H * (sizeof(char*)));
+    // A[H-1] = (char *)calloc(W, sizeof(char));
+    // A[H-1][2] = 5;
 
-    for(int i = 0; i < H; i++) {
-        for(int j = 0; j < W; j++) {
-            printf("%*d", 5, A[i][j]);
-        }
-        printf("\n");
-    }
-
-    printf("\n");
-    printf("\n");
-    printf("\n");
-
-    H += 1;
-    A = realloc(A, H * (sizeof(char*)));
-    A[H-1] = (char *)calloc(W, sizeof(char));
-    A[H-1][2] = 5;
-
-    for(int i = 0; i < H; i++) {
-        for(int j = 0; j < W; j++) {
-            printf("%*d", 5, A[i][j]);
-        }
-        printf("\n");
-    }
-    printf("%lu %lu %lu\n", sizeof(char), sizeof(char**), sizeof(int**));
+    // for(int i = 0; i < H; i++) {
+    //     for(int j = 0; j < W; j++) {
+    //         printf("%*d", 5, A[i][j]);
+    //     }
+    //     printf("\n");
+    // }
+    // printf("%lu %lu %lu\n", sizeof(char), sizeof(char**), sizeof(int**));
 
 
 
@@ -66,10 +65,8 @@ int main() {
     // char *block = (char*)malloc(buffer*sizeof(char));
     // char *block = (char*)calloc(BUFFER, sizeof(char));
     // char *blockArr[1] = (char*)calloc(BUFFER, sizeof(char));
-    // // // // char *arr[1][1] = (char*)calloc(BUFFER, sizeof(char));
+    char *arr[1][1] = (char*)calloc(BUFFER, sizeof(char));
     // block = "asssssssHollllle";
-    // A[0] = block;
-    // printf("%s\n", A[0]);
 
     // blockArr[0] = block;
     // // arr[2][0] = blockArr[0];
@@ -78,7 +75,9 @@ int main() {
     // printf("%d\n", A[4][4]);
     
     // blockArr[i] = realloc(blockArr[i], i + 1);
-    // arr[i][p] = realloc(arr[i][p], i + 5);
+    arr[i][p] = realloc(arr[i][p], i + 5);
+    arr[4][0] = 5;
+    printf("%c\n", arr[4][0]);
     
     // printf("%s\n", blockArr[0]);
     // printf("%s\n", arr[3][0]);
@@ -146,8 +145,8 @@ int main() {
 
     // printf("samijArr = %d\n", mostArr);
 
-    return 0;
-}
+    // return 0;
+// }
 
 // char* getString(void) {
 //     char c;
