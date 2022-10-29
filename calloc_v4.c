@@ -1,12 +1,22 @@
+/*
+Программа работает с динамическим двумерным массивом указателей.
+Она считывает символы функцией getchar(), и сохраняет символы
+во втором измерении массива. Увеличивает на один первое измерение,
+когда встречается с симолов переноса строки. И печатает их зеркально
+сначал по горизонатали, а потом по вертикали, если встречается
+с символом конца файла (он же CTRL + D).
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #define BUFFER 4
 
-int spaceCount(int lenght, int maxstrLenght);
+int spaceCount(int lenght, int maxstrLenght); /* функция возвращает количество пробелов, необходимых для принта после коротких строк.
+Это необходимо для горизонтальной симметрии итоговой фигуры. Симметрия сохраняется, ориентируясь на длину самой широкой строки */
 void printEtoGovno(char *A, int N);
-void reverseString(char *A);
 
 int main() {
     int i = 0;
@@ -18,7 +28,7 @@ int main() {
 
     int sizeArr = 0;
 
-    // 17-22 аллоцироуем память под двумерный массив
+    // аллоцироуем память под двумерный массив
     char **A = (char **)calloc(H, sizeof(char *));
 
     for(int i=0; i<H; i++) {
@@ -81,16 +91,17 @@ int main() {
         }
         A[i][currentLen + 1] = '\0';
 
-        // printf("strlen(A[i]) = %lu\n", strlen(A[i]));
         if (maxstrLen < strlen(A[i])) {
             maxstrLen = strlen(A[i]);
         }
     }
 
+    // печатаем результат по горизотали
     for(int i = 0; i < y; i++){
         printEtoGovno(A[i], spaceCount(strlen(A[i]), maxstrLen));
     }
 
+    // печатаем результат по вертикали
     for(int i = y - 1; i >= 0; i--){
         printEtoGovno(A[i], spaceCount(strlen(A[i]), maxstrLen));
     }
@@ -105,10 +116,12 @@ int spaceCount(int lenght, int maxstrLenght) {
 void printEtoGovno(char *A, int N) {
     printf("%s", A);
 
+    // печатаем сохранённую в массив строку
     for (int i = 0; i < N; i++) {
         printf(" ");
     }
 
+    // печатаем сохранённую в массив строку зеркально
     for (int i = strlen(A)-1; i >= 0; i-- ) {
         printf("%c", A[i]);
     }

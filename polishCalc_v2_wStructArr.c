@@ -1,10 +1,38 @@
-//  strDebug.pl --file=polishCalc_v2_wStructArr.c && gcc -o ./polishCalc_v2_wStructArr_O ./polishCalc_v2_wStructArr.c && ./polishCalc_v2_wStructArr_O
+// strDebug.pl --file=polishCalc_v2_wStructArr.c && gcc -o ./polishCalc_v2_wStructArr_O ./polishCalc_v2_wStructArr.c && ./polishCalc_v2_wStructArr_O
+
+/*
+    Обратный польский калькулятор.
+    Цифры сохранятся в стеке. Математические операции производятся над
+    последними двумя значениями стека.
+    Пишем:
+    5 2 4 *
+    Получаем:
+    Сохранили в стэк 5, 8
+    После пишем:
+    4 /
+    Получаем:
+    В стеке теперь хранится 5, 2
+    Чтобы вывести на экран содержимое стека, пишем "P"
+    Также можно создавать переменные, и присваивать им заранее нужное значение.
+    Например:
+    a=-4
+    b=3
+    Когда вводим...
+    a b * P
+    ...получаем
+    -12
+!*/
 
 #include  <stdio.h>
 #include  <ctype.h>
 #include  <stdlib.h>
 #include  <math.h>
-  
+
+/*
+    константы используются в блоке switch{} на 97 строке.
+    Когда мы их вводим, условие свитча проваливается в нужный блок, и отрабатывается функция.
+*/
+
 #define   LETTERS 10
 #define   MAXOP 100
 #define   MAXVAL 100

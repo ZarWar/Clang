@@ -307,20 +307,12 @@ char compare (char c) {
     }
 }
 
-// void printStruct(void) {
-//         printf("str 341 sA[count].l='%c', sA[count].n='%g',\n", structArr[count].l, structArr[count].n);
-// }
-
 void printStruct(void) {
     printf("printStruct(): вывод всех элементов массива структур\n");
     for(int i=0; i<LETTERS; i++) {
         printf("   sA[i].l='%c', sA[i].n='%g',\n", structArr[i].l, structArr[i].n);
     }
 }
-
-
-/* ========================================================================================== */
-
 
 int getopStruct(char s[]) {
     int i, c;
