@@ -1,71 +1,95 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 char intToChar (int digit);
 int  charToInt (char digit);
 
-int ostatok;
+int ostatok = 0;
 
 int main() {
-    int H = 2;
+    int H = 3;
     int W = 4;
-    
+    int n = 0;
+    int big;
+    int smaller;
+    int temp1Reg;
+    int temp2Reg;
+    int tempDigit;
+
     char **A = (char **)calloc(H, sizeof(char *));
 
     for(int i=0; i<H; i++) {
         A[i] = (char *)calloc(W, sizeof(char));
     }
 
-    char slagaemoe1[5] = {0};
-    char slagaemoe2[5] = {0};
-    char summa[10] = {0};
-
-    int ostatok = 0;
-    int ktoBolshe = 0;
-
-    int digit1;
-    int digit2;
-    int digit3;
-    int temp1;
-    int temp2;
-
-    printf("введи первое суммируемое:\n");
-    scanf("%s", slagaemoe1);
-    printf("\nвведи второе суммируемое:\n");
-    scanf("%s", slagaemoe2);
+    char c;
+    int i = 0;
+    int y = 0;
+    while((c = getchar()) != EOF) {
+        if(i == W - 1) {
+            W *= 2;
+            A[y] = (char *)realloc(A[y], W * sizeof(char));
+        }
+        
+        if(c == '\n') {
+            n++;
+            if (n == 2) {
+                break;
+            }
+            y++;
+            i = 0;
+        } else {
+            A[y][i++] = c;
+        }
+    }
 
     printf("\n");
-    printf("slag1 = '%s'\n", slagaemoe1);
-    printf("slag2 = '%s'\n", slagaemoe2);
+    printf("A[0] = '%s'\n", A[0]);
+    printf("A[1] = '%s'\n", A[1]);
 
-    printf("\n");
-    printf("strlen1 = %lu\n", strlen(slagaemoe1));
-    printf("strlen2 = %lu\n", strlen(slagaemoe2));
-
-    if(strlen(slagaemoe1) > strlen(slagaemoe2)) {
-        ktoBolshe = strlen(slagaemoe1);
+    if(strlen(A[y]) > strlen(A[y-1])) {
+        big = strlen(A[y]);
+        smaller = strlen(A[y-1])-1;
     } else {
-        ktoBolshe = strlen(slagaemoe2);
+        big = strlen(A[y-1]);
+        smaller = strlen(A[y])-1;
     }
      
-    printf("ktoBolshe = '%d'\n", ktoBolshe);
+    printf("big     = '%d'\n", big);
+    printf("smaller = '%d'\n", smaller);
+    printf("\n");
 
-    for(int i = ktoBolshe - 1; i >= 0; i--) {
-        digit3 = charToInt(slagaemoe1[i]) + charToInt(slagaemoe2[i]);
-        if(digit3 % 10 != 0) {
-            temp2 = digit3 / 10;
-            temp1 = digit3 % 10;
+    for(int i = big - 1; i >= 0; i--) {
+        
+        if(ostatok != 0) {
+            tempDigit = charToInt(A[0][i]) + charToInt(A[1][smaller--]) + ostatok;
+        }
+        if (ostatok == 0) {
+            tempDigit = charToInt(A[0][i]) + charToInt(A[1][smaller--]);
         }
 
-        if (temp2 != 0) {
-            ostatok = temp2;
+        if(tempDigit > 9) {
+            printf("str 73\n");
+            temp2Reg = tempDigit / 10;
+            temp1Reg = tempDigit % 10;
         } else {
+            printf("str 77\n");
+            temp1Reg = tempDigit;
+            temp2Reg = 0;
+        }
+
+        if (temp2Reg > 0) {
+            printf("str 83\n");
+            ostatok = temp2Reg;
+        } else {
+            printf("str 86\n");
             ostatok = 0;
         }
 
-        summa[i] = intToChar(temp1 + ostatok);
+        A[2][i] = intToChar(temp1Reg);
     }
-    printf("summa = %s\n", summa);
+    printf("summa = %s\n", A[2]);
 
     return 0;
 }
