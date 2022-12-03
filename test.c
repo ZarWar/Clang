@@ -89,20 +89,28 @@ int main() {
             }
         } else if(strlen(A[y-1]) < strlen(A[y])) {
             if(ostatok > 0) {
+                printf("str 92:  i = '%d'\n", i);
                 tempDigit = charToInt(A[1][i]) + charToInt(A[0][(smaller--)]) + ostatok; // делаю тут "[(smaller--)-1]" для правильной индексации
             }
             if (ostatok == 0) {
+                printf("str 96:  i = '%d'\n", i);                
                 tempDigit = charToInt(A[1][i]) + charToInt(A[0][(smaller--)]); // делаю тут "[(smaller--)-1]" для правильной индексации
             }
         } else if(strlen(A[y-1]) == strlen(A[y])) {
             if(ostatok > 0) {
+                printf("str 101:  i = '%d'\n", i);                
                 tempDigit = charToInt(A[1][i]) + charToInt(A[0][(smaller--)]) + ostatok; // делаю тут "[(smaller--)-1]" для правильной индексации
             }
             if (ostatok == 0) {
+                printf("str 105:  i = '%d'\n", i);                
                 tempDigit = charToInt(A[1][i]) + charToInt(A[0][(smaller--)]); // делаю тут "[(smaller--)-1]" для правильной индексации
             }
         }
         
+
+
+        /* этот блок служит для числа, который в процессе суммирования получил второй регистр.
+        В нём создаются две переменный, для второго регитсра и первого соответственно */
         if(tempDigit > 9) {
             temp2Reg = tempDigit / 10;
             temp1Reg = tempDigit % 10;
@@ -117,9 +125,11 @@ int main() {
             ostatok = 0;
         }
 
-        printf("str 124: tempDigit = '%d'\n", tempDigit);
-        printf("str 125: temp1Reg  = '%d'\n", temp1Reg);
-        printf("str 126: ostatok   = '%d'\n", ostatok);
+
+
+        printf("str 130: tempDigit = '%d'\n", tempDigit);
+        printf("str 131: temp1Reg  = '%d'\n", temp1Reg);
+        printf("str 132: ostatok   = '%d'\n", ostatok);
 
         A[2][i] = intToChar(temp1Reg);
 
@@ -132,7 +142,6 @@ int main() {
         printf("check summa        = '%s'\n", A[2]);
         printf("\n");
     }
-
 
     printf("summa = %s\n", A[2]);
 
