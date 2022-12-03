@@ -133,6 +133,7 @@ int main() {
         printf("\n");
     }
 
+
     printf("summa = %s\n", A[2]);
 
     return 0;
