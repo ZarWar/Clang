@@ -34,6 +34,7 @@ int main() {
         if(i == W - 1) {
             W *= 2;
             A[y] = (char *)realloc(A[y], W * sizeof(char));
+            printf("str 37: realloc(A[%d]), W='%d'\n", y, W); // проверяю, что массив реаллоицировался
         }
         
         if(c == '\n') {
@@ -44,6 +45,8 @@ int main() {
                 break;
             }
             y++;
+            W = 4;
+            printf("str 49: y='%d'\n", y); // проверяю, что массив "переключился"
             i = 1;
         } else {
             A[y][i++] = c;
@@ -80,33 +83,37 @@ int main() {
         сдвигаю "5" за счёт переменной "smaller" */ 
         if(strlen(A[y-1]) > strlen(A[y])) {
             if(ostatok > 0) {
-                printf("str 83:  i = '%d'\n", i);
+                printf("str 86:  i = '%d'\n", i);
                 tempDigit = charToInt(A[0][i]) + charToInt(A[1][(smaller--)]) + ostatok; // делаю тут "[(smaller--)-1]" для правильной индексации
             }
             if (ostatok == 0) {
-                printf("str 87:  i = '%d'\n", i);
+                printf("str 90:  i = '%d'\n", i);
                 tempDigit = charToInt(A[0][i]) + charToInt(A[1][(smaller--)]); // делаю тут "[(smaller--)-1]" для правильной индексации
             }
         } else if(strlen(A[y-1]) < strlen(A[y])) {
             if(ostatok > 0) {
-                printf("str 92:  i = '%d'\n", i);
+                printf("str 95:  i = '%d'\n", i);
                 tempDigit = charToInt(A[1][i]) + charToInt(A[0][(smaller--)]) + ostatok; // делаю тут "[(smaller--)-1]" для правильной индексации
             }
             if (ostatok == 0) {
-                printf("str 96:  i = '%d'\n", i);                
+                printf("str 99:  i = '%d'\n", i);                
                 tempDigit = charToInt(A[1][i]) + charToInt(A[0][(smaller--)]); // делаю тут "[(smaller--)-1]" для правильной индексации
             }
         } else if(strlen(A[y-1]) == strlen(A[y])) {
             if(ostatok > 0) {
-                printf("str 101:  i = '%d'\n", i);                
+                printf("str 104:  i = '%d'\n", i);                
                 tempDigit = charToInt(A[1][i]) + charToInt(A[0][(smaller--)]) + ostatok; // делаю тут "[(smaller--)-1]" для правильной индексации
             }
             if (ostatok == 0) {
-                printf("str 105:  i = '%d'\n", i);                
+                printf("str 108:  i = '%d'\n", i);                
                 tempDigit = charToInt(A[1][i]) + charToInt(A[0][(smaller--)]); // делаю тут "[(smaller--)-1]" для правильной индексации
             }
         }
         
+
+
+        /* этот блок служит для числа, который в процессе суммирования получил второй регистр.
+        В нём создаются две переменный, для второго регитсра и первого соответственно */
         if(tempDigit > 9) {
             temp2Reg = tempDigit / 10;
             temp1Reg = tempDigit % 10;
@@ -121,9 +128,13 @@ int main() {
             ostatok = 0;
         }
 
-        printf("str 124: tempDigit = '%d'\n", tempDigit);
-        printf("str 125: temp1Reg  = '%d'\n", temp1Reg);
-        printf("str 126: ostatok   = '%d'\n", ostatok);
+
+
+        printf("str 133: A[0][i]   = '%c'\n", A[0][i]);
+        printf("str 134: A[1][i]   = '%c'\n", A[1][smaller + 1]);
+        printf("str 135: tempDigit = '%d'\n", tempDigit);
+        printf("str 136: temp1Reg  = '%d'\n", temp1Reg);
+        printf("str 137: ostatok   = '%d'\n", ostatok);
 
         A[2][i] = intToChar(temp1Reg);
 
