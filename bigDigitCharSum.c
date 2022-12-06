@@ -2,155 +2,104 @@
 #include <string.h>
 #include <stdlib.h>
 
+typedef struct bigBigInt {
+    int digitCount;
+    int byteSize;
+    char *digitArr;
+} bigInt;
+
 char intToChar     (int digit);
 int  charToInt     (char digit);
-char shift         (char *arr);
-char reverseString (char *arr);
-
-int ostatok = 0;
+bigInt bigDigit();
+void printBigInt(bigInt);
+bigInt sumBigInt(bigInt, bigInt);
+void reverseString (bigInt);
 
 int main() {
-    int H = 3;
-    int W = 4;
-    int n = 0;
+    bigInt A = bigDigit();
+    bigInt B = bigDigit();
     
-    int biggest;
-    int smaller;
-
-    int temp1Reg;
-    int temp2Reg;
-    int tempDigit;
-
-    char **A = (char **)calloc(H, sizeof(char *));
-
-    for(int i=0; i<H; i++) {
-        A[i] = (char *)calloc(W, sizeof(char));
-    }
-
-    char c;
-    int i = 1;
-    int y = 0;
-    while((c = getchar()) != EOF) {
-        if(i == W - 1) {
-            W *= 2;
-            A[y] = (char *)realloc(A[y], W * sizeof(char));
-            printf("str 37: realloc(A[%d]), W='%d'\n", y, W); // проверяю, что массив реаллоицировался
-        }
-        
-        if(c == '\n') {
-            n++;
-            if (n == 2) {
-                A[0][0] = '.'; // здесь мне нужен нулевой индекс, не забитый '\0'
-                A[1][0] = '.'; // здесь мне нужен нулевой индекс, не забитый '\0'
-                break;
-            }
-            y++;
-            W = 4;
-            printf("str 49: y='%d'\n", y); // проверяю, что массив "переключился"
-            i = 1;
-        } else {
-            A[y][i++] = c;
-        }
-    }
-
-    printf("\n");
-    printf("A[0]    = '%s'\n", A[0]);
-    printf("A[1]    = '%s'\n", A[1]);
-
-    // здесь сравниваю длину массива#2 с массивом#1, и сохраняю результат в две разные переменные
-    if(strlen(A[y]) > strlen(A[y-1])) {
-        biggest = strlen(A[y]) - 1;
-        smaller = strlen(A[y-1]) - 1;
-    } else {
-        biggest = strlen(A[y-1]) - 1;
-        smaller = strlen(A[y]) - 1;
-    }
-
-    printf("biggest = '%d'\n", biggest);
-    printf("smaller = '%d'\n", smaller);
-    printf("\n");
-
-    /* Забиваю результирующий массив "точками" для лучшей наглядности работы проги */
-    for(int i = biggest-1; i >= 0; i--) {
-        A[2][i] = '.';
-    }
-
-    for(int i = biggest; i >= 1; i--) {
-        /* этим if() я подстраиваю подсчёт под массив, что покороче.
-        визуализирую логику, как будто считаю в столбик:
-        125+    делаю как    125+ 
-        5                      5  
-        сдвигаю "5" за счёт переменной "smaller" */ 
-        if(strlen(A[y-1]) > strlen(A[y])) {
-            if(ostatok > 0) {
-                printf("str 86:  i = '%d'\n", i);
-                tempDigit = charToInt(A[0][i]) + charToInt(A[1][(smaller--)]) + ostatok; // делаю тут "[(smaller--)-1]" для правильной индексации
-            }
-            if (ostatok == 0) {
-                printf("str 90:  i = '%d'\n", i);
-                tempDigit = charToInt(A[0][i]) + charToInt(A[1][(smaller--)]); // делаю тут "[(smaller--)-1]" для правильной индексации
-            }
-        } else if(strlen(A[y-1]) < strlen(A[y])) {
-            if(ostatok > 0) {
-                printf("str 95:  i = '%d'\n", i);
-                tempDigit = charToInt(A[1][i]) + charToInt(A[0][(smaller--)]) + ostatok; // делаю тут "[(smaller--)-1]" для правильной индексации
-            }
-            if (ostatok == 0) {
-                printf("str 99:  i = '%d'\n", i);                
-                tempDigit = charToInt(A[1][i]) + charToInt(A[0][(smaller--)]); // делаю тут "[(smaller--)-1]" для правильной индексации
-            }
-        } else if(strlen(A[y-1]) == strlen(A[y])) {
-            if(ostatok > 0) {
-                printf("str 104:  i = '%d'\n", i);                
-                tempDigit = charToInt(A[1][i]) + charToInt(A[0][(smaller--)]) + ostatok; // делаю тут "[(smaller--)-1]" для правильной индексации
-            }
-            if (ostatok == 0) {
-                printf("str 108:  i = '%d'\n", i);                
-                tempDigit = charToInt(A[1][i]) + charToInt(A[0][(smaller--)]); // делаю тут "[(smaller--)-1]" для правильной индексации
-            }
-        }
-        
-
-
-        /* этот блок служит для числа, который в процессе суммирования получил второй регистр.
-        В нём создаются две переменный, для второго регитсра и первого соответственно */
-        if(tempDigit > 9) {
-            temp2Reg = tempDigit / 10;
-            temp1Reg = tempDigit % 10;
-        } else {
-            temp1Reg = tempDigit;
-            temp2Reg = 0;
-        }
-
-        if (temp2Reg > 0) {
-            ostatok = temp2Reg;
-        } else {
-            ostatok = 0;
-        }
-
-
-
-        printf("str 133: A[0][i]   = '%c'\n", A[0][i]);
-        printf("str 134: A[1][i]   = '%c'\n", A[1][smaller + 1]);
-        printf("str 135: tempDigit = '%d'\n", tempDigit);
-        printf("str 136: temp1Reg  = '%d'\n", temp1Reg);
-        printf("str 137: ostatok   = '%d'\n", ostatok);
-
-        A[2][i] = intToChar(temp1Reg);
-
-        if(i == 1 && ostatok != 0) {
-            A[2][0] = intToChar(ostatok);
-        } else if (i == 1 && ostatok == 0) {
-            shift(A[2]);
-        }
-        
-        printf("check summa        = '%s'\n", A[2]);
-        printf("\n");
-    }
-
-    printf("summa = %s\n", A[2]);
+    printBigInt(A);
+    printBigInt(B);
+    bigInt D = sumBigInt(A, B);
+    printBigInt(D);
 
     return 0;
+}
+
+bigInt bigDigit() {
+    bigInt dick;
+    dick.digitCount = 0;
+    dick.byteSize = 10;
+    dick.digitArr = (char *)calloc(dick.byteSize, sizeof(char));
+
+    int c;
+    while((c = getchar()) != '\n') {
+        if(dick.digitCount >= dick.byteSize) {
+            dick.byteSize += 10;
+            dick.digitArr = (char *)realloc(dick.digitArr, dick.byteSize * sizeof(char));
+        }
+        dick.digitArr[dick.digitCount++] = c - 48;
+    }
+
+    return dick;
+}
+
+void printBigInt(bigInt digit) {
+    for(int i = 0; i < digit.digitCount; i++) {
+        printf("%d", digit.digitArr[i]);
+    }
+    printf("\n");
+}
+
+bigInt sumBigInt(bigInt A, bigInt B) {
+    bigInt C;
+    if(A.digitCount > B.digitCount) {
+        C.byteSize = A.digitCount + 1; // +1 - для +1 регистра в сумме
+    } else {
+        C.byteSize = B.digitCount + 1; // +1 - для +1 регистра в сумме
+    }
+
+    C.digitCount = 0;
+    C.digitArr = (char *)calloc(C.byteSize, sizeof(char));
+
+    reverseString(A);
+    reverseString(B);
+
+    int ostatok = 0;
+    int i;
+
+    for(i = 0; i < C.byteSize; i++) { // разобраться, как этот цикл должен работать. Здесь не должен быть byteSize.
+        C.digitCount++;
+        int sum = A.digitArr[i] + B.digitArr[i] + ostatok;
+
+        if(sum >= 10) {
+            C.digitArr[i] = sum - 10;
+            ostatok = 1;
+        } else {
+            C.digitArr[i] = sum;
+            ostatok = 0;
+        }
+    }
+
+    if(ostatok == 1) {
+        C.digitCount++;
+        C.digitArr[++i] = 1;
+    }
+
+    reverseString(C);
+
+    return C;
+}
+
+void reverseString(bigInt A) {
+    int temp;
+    int lenght = A.digitCount - 1;
+    for(int i = 0; i < A.digitCount/2; i++) {
+        temp = A.digitArr[i];
+        A.digitArr[i] = A.digitArr[lenght-i];
+        A.digitArr[lenght-i] = temp;
+    }
 }
 
 char intToChar (int digit) {
@@ -165,32 +114,4 @@ int charToInt (char digit) {
         return digit - 48;        
     }
     return 0;
-}
-
-char shift(char *arr) {
-    int lenght = strlen(arr);
-    for(int i = 1; i < lenght; i++) {
-        arr[i - 1] = arr[i];
-    }
-    arr[lenght - 1] = '\0';
-    
-    return *arr;
-}
-
-/* мне функция "reverseString()" уже не нужна, но пусть пока тут останется.
-Планировал разворачивать массив на моменте суммирования элементов первого и второго массива.
-Но понял, что могу оставить неиспользованным нулевой индекс массива, и если есть остаток от суммирования,
-то переношу его в этот нулевой индекс. Нету остатка - двигаю массив на один элемент влево функцией shift().
-Тоесть я только единожды двигаю массив целиком, в отличии от использования функции reverseString(),
-которую бы пришлось использовать дважды */
-char reverseString(char *arr) {
-    int temp;
-    int lenght = strlen(arr)-1;
-    printf("%d\n", lenght);
-    for(int i = 0; i < lenght/2; i++) {
-        temp = arr[i];
-        arr[i] = arr[lenght];
-        arr[lenght--] = temp;
-    }
-    return *arr;
 }
