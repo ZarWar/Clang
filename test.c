@@ -10,14 +10,14 @@ typedef struct bigBigInt {
 
 char intToChar     (int digit);
 int  charToInt     (char digit);
-bigInt bigDigit();
+bigInt bigDigInit();
 void printBigInt(bigInt);
 bigInt sumBigInt(bigInt, bigInt);
 void reverseString (bigInt);
 
 int main() {
-    bigInt A = bigDigit();
-    bigInt B = bigDigit();
+    bigInt A = bigDigInit();
+    bigInt B = bigDigInit();
     
     printBigInt(A);
     printBigInt(B);
@@ -27,7 +27,7 @@ int main() {
     return 0;
 }
 
-bigInt bigDigit() {
+bigInt bigDigInit() {
     bigInt dick;
     dick.digitCount = 0;
     dick.byteSize = 10;
