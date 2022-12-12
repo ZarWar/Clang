@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-typedef struct bigBigInt {
+typedef struct digities {
     int digitCount;
     int byteSize;
     char *digitArr;
@@ -10,58 +10,60 @@ typedef struct bigBigInt {
 
 char intToChar     (int digit);
 int  charToInt     (char digit);
-bigInt bigDigInit();
-void printBigInt(bigInt);
-bigInt sumBigInt(bigInt, bigInt);
-void reverseString (bigInt);
+char shift         (char *arr);
+void reverseString (bigInt A);
+char charSum       (char *arr);
+bigInt bigDigitInit(int firstDigit);
+bigInt bigDigitSum (bigInt A, bigInt B);
+void printBigInt   (bigInt digit);
+
+int ostatok = 0;
 
 int main() {
-    bigInt A = bigDigInit();
-    bigInt B = bigDigInit();
+    int W = 4;
+    int i = 0;
+    int y = 0;
+
+    bigInt FirstS = bigDigitInit(1);
+    bigInt SecondS = bigDigitInit(2);
     
-    printBigInt(A);
-    printBigInt(B);
-    bigInt D = sumBigInt(A, B);
-    printBigInt(D);
+    for(int i = 0; i < 4; i++) {
+        bigInt TempS = SecondS;
+        SecondS = bigDigitSum(FirstS, SecondS);
+        FirstS = TempS;
+    }
 
     return 0;
 }
 
-bigInt bigDigInit() {
-    bigInt dick;
-    dick.digitCount = 0;
-    dick.byteSize = 10;
-    dick.digitArr = (char *)calloc(dick.byteSize, sizeof(char));
+bigInt bigDigitInit(int firstDigit) {
+    bigInt A;
 
-    int c;
-    while((c = getchar()) != '\n') {
-        if(dick.digitCount >= dick.byteSize) {
-            dick.byteSize += 10;
-            dick.digitArr = (char *)realloc(dick.digitArr, dick.byteSize * sizeof(char));
-        }
-        dick.digitArr[dick.digitCount++] = c - 48;
-    }
+    A.digitCount = 1;
+    A.byteSize = 1;
+    A.digitArr = (char *)calloc(A.byteSize, sizeof(char));
 
-    return dick;
+    A.digitArr[0] = firstDigit;
+
+    return A;
 }
 
-void printBigInt(bigInt digit) {
-    for(int i = 0; i < digit.digitCount; i++) {
-        printf("%d", digit.digitArr[i]);
-    }
-    printf("\n");
-}
-
-bigInt sumBigInt(bigInt A, bigInt B) {
+bigInt bigDigitSum (bigInt A, bigInt B) {
     bigInt C;
+
     if(A.digitCount > B.digitCount) {
         C.byteSize = A.digitCount + 1; // +1 - для +1 регистра в сумме
+        C.digitCount = A.digitCount;
     } else {
         C.byteSize = B.digitCount + 1; // +1 - для +1 регистра в сумме
+        C.digitCount = B.digitCount;
     }
 
     C.digitCount = 0;
     C.digitArr = (char *)calloc(C.byteSize, sizeof(char));
+
+    printBigInt(A);
+    printBigInt(B);
 
     reverseString(A);
     reverseString(B);
@@ -69,8 +71,8 @@ bigInt sumBigInt(bigInt A, bigInt B) {
     int ostatok = 0;
     int i;
 
-    for(i = 0; i < C.byteSize; i++) { // разобраться, как этот цикл должен работать. Здесь не должен быть byteSize.
-        C.digitCount++;
+    for(i = 0; i < C.digitCount; i++) { // разобраться, как этот цикл должен работать. Здесь не должен быть byteSize.
+        // C.digitCount++;
         int sum = A.digitArr[i] + B.digitArr[i] + ostatok;
 
         if(sum >= 10) {
@@ -88,24 +90,29 @@ bigInt sumBigInt(bigInt A, bigInt B) {
     }
 
     reverseString(C);
+    printBigInt(C);
 
     return C;
 }
 
-void reverseString(bigInt A) {
-    int temp;
-    int lenght = A.digitCount - 1;
-    for(int i = 0; i < A.digitCount/2; i++) {
-        temp = A.digitArr[i];
-        A.digitArr[i] = A.digitArr[lenght-i];
-        A.digitArr[lenght-i] = temp;
+void printBigInt(bigInt A) {
+    for(int i = 0; i < A.digitCount; i++) {
+        printf("%d", A.digitArr[i]);
     }
+    printf("\n");
 }
+
+// char charSum (char *arr) {
+    // int tempInt1 = charToInt(A[0][i]);
+    // int tempInt2 = charToInt(A[1][i]);
+    // return tempInt1;
+// }
 
 char intToChar (int digit) {
     if(digit >= 0 && digit <= 9) {
         return digit + 48;        
     }
+
     return 0;
 }
 
@@ -113,5 +120,29 @@ int charToInt (char digit) {
     if(digit >= '0' && digit <= '9') {
         return digit - 48;        
     }
+
     return 0;
+}
+
+char shift (char *arr) {
+    int lenght = strlen(arr);
+    for(int i = 1; i < lenght; i++) {
+        arr[i - 1] = arr[i];
+    }
+    arr[lenght - 1] = '\0';
+    
+    return *arr;
+}
+
+void reverseString(bigInt A) {
+    if (A.digitCount == 1) {
+        return;
+    }
+    int temp;
+    int lenght = A.digitCount - 1;
+    for(int i = 0; i < A.digitCount/2; i++) {
+        temp = A.digitArr[i];
+        A.digitArr[i] = A.digitArr[lenght-i];
+        A.digitArr[lenght-i] = temp;
+    }
 }
