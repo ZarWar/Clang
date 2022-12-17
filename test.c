@@ -1,4 +1,5 @@
 // 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597,
+// 100-е число фибоначии = 218922995834555169026
 
 #include <stdio.h>
 #include <string.h>
@@ -10,15 +11,15 @@ typedef struct digities {
     char *digitArr;
 } bigInt;
 
-char intToChar      (int digit);
-int  charToInt      (char digit);
-char shift          (char *arr);
-void reverseString  (bigInt A);
-char charSum        (char *arr);
-bigInt bigDigitInit (int firstDigit);
-bigInt bigDigitSum  (bigInt A, bigInt B);
-void printBigInt    (bigInt digit);
-void dump(bigInt digit);
+char   intToChar     (int digit);
+int    charToInt     (char digit);
+char   shift         (char *arr);
+void   reverseString (bigInt A);
+char   charSum       (char *arr);
+bigInt bigDigitInit  (int firstDigit);
+bigInt bigDigitSum   (bigInt A, bigInt B);
+void   printBigInt   (bigInt digit);
+void   dump          (bigInt digit);
 
 int ostatok = 0;
 
@@ -27,15 +28,12 @@ int main() {
     int i = 0;
     int y = 0;
 
-    printf("str %d\n", 5 / 2);
-
-    bigInt FirstS = bigDigitInit(1);
+    bigInt FirstS = bigDigitInit(0);
     bigInt SecondS = bigDigitInit(1);
 
-    // bigInt test = bigDigitSum(FirstS, SecondS);
-    // printBigInt(test);
-
-    for(int i = 0; i < 12; i++) {
+    for(int i = 0; i < 999; i++) { /* цикл здесь работает до 1000-го числа фибоначчи,
+    потому что мы пропускаем начальную последовательность, при которой число равно "0"  */ 
+        
         bigInt TempS = SecondS;  // большее значение переливается в темпоральную структуру (3)
         SecondS = bigDigitSum(FirstS, SecondS); // к большему значению суммируется малое (2 + 3 = 5)
         FirstS = TempS; // большее предыдущее значение становится теперь малым (3)
@@ -48,7 +46,7 @@ bigInt bigDigitInit(int firstDigit) {
     bigInt A;
 
     A.digitCount = 1;
-    A.byteSize = 6;
+    A.byteSize = 2;
     A.digitArr = (char *)calloc(A.byteSize, sizeof(char));
     A.digitArr[0] = firstDigit;
 
@@ -58,8 +56,6 @@ bigInt bigDigitInit(int firstDigit) {
 bigInt bigDigitSum (bigInt A, bigInt B) {
     bigInt C;
 
-    dump(A);
-    dump(B);
     if(A.digitCount  > B.digitCount) {
         C.byteSize   = A.digitCount + 1; // +1 - для +1 регистра в сумме
         C.digitCount = A.digitCount;
@@ -89,15 +85,19 @@ bigInt bigDigitSum (bigInt A, bigInt B) {
     }
 
     if(ostatok == 1) {
-        // printf("str 86; i = %d\n", i);
-        // dump(C);
         C.digitCount++;
         C.digitArr[i] = 1;
     }
 
     reverseString(C);
 
+    // из за отсутствия этих двух реверсов был "затык" в решении
+    reverseString(A); // добавил этот реверс, потому что на 75 строке не реверсировал обратно
+    reverseString(B); // добавил этот реверс, потому что на 76 строке не реверсировал обратно
+
     printBigInt(C);
+    dump(A);
+    dump(B);
 
     return C;
 }
@@ -108,12 +108,6 @@ void printBigInt(bigInt A) {
     }
     printf("\n");
 }
-
-// char charSum (char *arr) {
-    // int tempInt1 = charToInt(A[0][i]);
-    // int tempInt2 = charToInt(A[1][i]);
-    // return tempInt1;
-// }
 
 char intToChar (int digit) {
     if(digit >= 0 && digit <= 9) {
@@ -146,13 +140,6 @@ void reverseString(bigInt A) {
         return;
     }
 
-    if (A.digitCount == 2) {
-        int temp = A.digitArr[0];
-        A.digitArr[0] = A.digitArr[1];
-        A.digitArr[1] = temp;
-        return;
-    }
-
     int temp;
     int lenght = A.digitCount - 1;
     for(int i = 0; i < A.digitCount/2; i++) {
@@ -163,13 +150,13 @@ void reverseString(bigInt A) {
 }
 
 void dump (bigInt A) {
-    printf(".digitArr = ");
+    printf(".digitArr   = ");
     for(int i = 0; i < A.digitCount; i++) {
         printf("%d", A.digitArr[i]);
     }
     printf("\n");
 
     printf(".digitCount = %d\n", A.digitCount);
-    printf(".byteSize = %d\n", A.byteSize);
+    printf(".byteSize   = %d\n", A.byteSize);
     printf("\n");
 }

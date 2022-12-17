@@ -19,10 +19,15 @@ int main() {
     fibo.countD = 5;
     fibo.fubble = 555555;
 
-    printf("%lu\n", sizeof(fibo));
-    printf("%lu\n", sizeof(fiboPP));
+    // printf("%lu\n", sizeof(fibo));
+    // printf("%lu\n", sizeof(fiboPP));
 
-    printf("%d\n", (*fiboPP).countD);
+    // printf("%d\n", (*fiboPP).countD);
+
+    printf("1\n");
+    printf("232323\r");
+    // printf("3\r");
+    // printf("\b");
 
     return 0;
 }
