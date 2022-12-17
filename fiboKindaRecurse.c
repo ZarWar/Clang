@@ -15,14 +15,14 @@ int selfCountingFiboRecurse(bigInt A);
 int main() {
     bigInt fibo;
     fibo.firstD = 1;
-    fibo.countD = 1;
+    fibo.countD = 0;
     selfCountingFiboRecurse(fibo);
 
     return 0;
 }
 
 int selfCountingFiboRecurse(bigInt fibo) {
-    if (fibo.countD == 10) {
+    if (fibo.countD == 12) {
         return 0;
     }
     if (check == 1) {
@@ -37,4 +37,5 @@ int selfCountingFiboRecurse(bigInt fibo) {
         printf("%d %d\n", fibo.countD, fibo.firstD);
     }
     selfCountingFiboRecurse(fibo);
+    return 0;
 }

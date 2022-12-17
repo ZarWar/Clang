@@ -85,6 +85,8 @@ bigInt sumBigInt(bigInt A, bigInt B) {
     if(ostatok == 1) {
         C.digitCount++;
         C.digitArr[++i] = 1;
+    } else {
+        C.digitArr[i] = '.';
     }
 
     reverseString(C);

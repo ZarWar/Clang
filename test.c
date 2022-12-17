@@ -1,3 +1,5 @@
+// 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597,
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -8,14 +10,15 @@ typedef struct digities {
     char *digitArr;
 } bigInt;
 
-char intToChar     (int digit);
-int  charToInt     (char digit);
-char shift         (char *arr);
-void reverseString (bigInt A);
-char charSum       (char *arr);
-bigInt bigDigitInit(int firstDigit);
-bigInt bigDigitSum (bigInt A, bigInt B);
-void printBigInt   (bigInt digit);
+char intToChar      (int digit);
+int  charToInt      (char digit);
+char shift          (char *arr);
+void reverseString  (bigInt A);
+char charSum        (char *arr);
+bigInt bigDigitInit (int firstDigit);
+bigInt bigDigitSum  (bigInt A, bigInt B);
+void printBigInt    (bigInt digit);
+void dump(bigInt digit);
 
 int ostatok = 0;
 
@@ -24,13 +27,18 @@ int main() {
     int i = 0;
     int y = 0;
 
+    printf("str %d\n", 5 / 2);
+
     bigInt FirstS = bigDigitInit(1);
-    bigInt SecondS = bigDigitInit(2);
-    
-    for(int i = 0; i < 4; i++) {
-        bigInt TempS = SecondS;
-        SecondS = bigDigitSum(FirstS, SecondS);
-        FirstS = TempS;
+    bigInt SecondS = bigDigitInit(1);
+
+    // bigInt test = bigDigitSum(FirstS, SecondS);
+    // printBigInt(test);
+
+    for(int i = 0; i < 12; i++) {
+        bigInt TempS = SecondS;  // большее значение переливается в темпоральную структуру (3)
+        SecondS = bigDigitSum(FirstS, SecondS); // к большему значению суммируется малое (2 + 3 = 5)
+        FirstS = TempS; // большее предыдущее значение становится теперь малым (3)
     }
 
     return 0;
@@ -40,9 +48,8 @@ bigInt bigDigitInit(int firstDigit) {
     bigInt A;
 
     A.digitCount = 1;
-    A.byteSize = 1;
+    A.byteSize = 6;
     A.digitArr = (char *)calloc(A.byteSize, sizeof(char));
-
     A.digitArr[0] = firstDigit;
 
     return A;
@@ -51,19 +58,17 @@ bigInt bigDigitInit(int firstDigit) {
 bigInt bigDigitSum (bigInt A, bigInt B) {
     bigInt C;
 
-    if(A.digitCount > B.digitCount) {
-        C.byteSize = A.digitCount + 1; // +1 - для +1 регистра в сумме
+    dump(A);
+    dump(B);
+    if(A.digitCount  > B.digitCount) {
+        C.byteSize   = A.digitCount + 1; // +1 - для +1 регистра в сумме
         C.digitCount = A.digitCount;
     } else {
-        C.byteSize = B.digitCount + 1; // +1 - для +1 регистра в сумме
+        C.byteSize   = B.digitCount + 1; // +1 - для +1 регистра в сумме
         C.digitCount = B.digitCount;
     }
 
-    C.digitCount = 0;
     C.digitArr = (char *)calloc(C.byteSize, sizeof(char));
-
-    printBigInt(A);
-    printBigInt(B);
 
     reverseString(A);
     reverseString(B);
@@ -72,7 +77,6 @@ bigInt bigDigitSum (bigInt A, bigInt B) {
     int i;
 
     for(i = 0; i < C.digitCount; i++) { // разобраться, как этот цикл должен работать. Здесь не должен быть byteSize.
-        // C.digitCount++;
         int sum = A.digitArr[i] + B.digitArr[i] + ostatok;
 
         if(sum >= 10) {
@@ -85,11 +89,14 @@ bigInt bigDigitSum (bigInt A, bigInt B) {
     }
 
     if(ostatok == 1) {
+        // printf("str 86; i = %d\n", i);
+        // dump(C);
         C.digitCount++;
-        C.digitArr[++i] = 1;
+        C.digitArr[i] = 1;
     }
 
     reverseString(C);
+
     printBigInt(C);
 
     return C;
@@ -138,6 +145,14 @@ void reverseString(bigInt A) {
     if (A.digitCount == 1) {
         return;
     }
+
+    if (A.digitCount == 2) {
+        int temp = A.digitArr[0];
+        A.digitArr[0] = A.digitArr[1];
+        A.digitArr[1] = temp;
+        return;
+    }
+
     int temp;
     int lenght = A.digitCount - 1;
     for(int i = 0; i < A.digitCount/2; i++) {
@@ -145,4 +160,16 @@ void reverseString(bigInt A) {
         A.digitArr[i] = A.digitArr[lenght-i];
         A.digitArr[lenght-i] = temp;
     }
+}
+
+void dump (bigInt A) {
+    printf(".digitArr = ");
+    for(int i = 0; i < A.digitCount; i++) {
+        printf("%d", A.digitArr[i]);
+    }
+    printf("\n");
+
+    printf(".digitCount = %d\n", A.digitCount);
+    printf(".byteSize = %d\n", A.byteSize);
+    printf("\n");
 }
