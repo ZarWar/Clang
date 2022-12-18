@@ -15,6 +15,8 @@ int main() {
     bigInt fibo;
     bigInt *fiboPP = &fibo;
 
+    int i = 5;
+
     fibo.firstD = 1;
     fibo.countD = 5;
     fibo.fubble = 555555;
@@ -24,8 +26,15 @@ int main() {
 
     // printf("%d\n", (*fiboPP).countD);
 
-    printf("1\n");
-    printf("232323\r");
+    printf("111\v\b111\n");
+    printf("222222\n");
+    printf("333333");
+    printf("\r");
+    printf("\n");
+    printf("%d\n", fibo);
+
+
+    // printf("\b\b\b\b\b");
     // printf("3\r");
     // printf("\b");
 

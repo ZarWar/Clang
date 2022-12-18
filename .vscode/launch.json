@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        
+        {
+            "name": "C/C++: gcc сборка и отладка активного файла",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/Users/applaleks/VarMac/Clang/debug",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "/Users/applaleks/VarMac/Clang",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "C/C++: gcc сборка активного файла"
+        },
+    ],
+    "version": "2.0.0"
+}
