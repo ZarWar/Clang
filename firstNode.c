@@ -1,8 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-typedef struct derevo {
-    struct derevo *left;
-    struct derevo *right;
+typedef struct tree {
+    struct tree *left;
+    struct tree *right;
     int number;
 } node;
 
@@ -13,7 +14,7 @@ int main() {
 
     int c;
     for(int i = 0; i < 5; i++) {
-        c = scanf("%d");
+        scanf("%d", &c);
         if(i == 0){
             head.number = c;
         } else {
@@ -27,10 +28,10 @@ int main() {
 void addNumber (node A, int d) {
     if(d > A.number) {
         A.right = (node *)calloc(1, sizeof(node));
-        addNumber(A.right, d);
+        addNumber(*A.right, d);
     } else if (d < A.number) {
         A.left  = (node *)calloc(1, sizeof(node));
-        addNumber(A.left, d);
+        addNumber(*A.left, d);
     }
     return;
 }
