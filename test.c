@@ -1,93 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
-typedef struct tree{
-    int number;
-    struct tree *left;
-    struct tree *right;
-} node;
-
-int countAN = 1; // счетчик выполнения функции addNumber
-int countPS = 1; // счетчик выполнения функции printStructure
-
-void addNumber (node A, int d);
-void printStructure(node A);
-node createNote(void);
+char* concatFunc(char *arr1, char *arr2);
 
 int main() {
+    char arr1[] = "Bill_";
+    char arr2[] = "Murray";
 
-    node A;
+    printf("%lu\n", sizeof(arr1));
 
-    int c = 2;
-
-    while(c < 5) {
-        scanf("%d", &c);
-        addNumber(A, c);
-    }
-
-    printf("str 29: %d\n", A.right->number);
-    printf("\n\n");
-
-    printStructure(A);
+    char *arrConcat = concatFunc(arr1, arr2);
+    printf("%s\n", arrConcat);
 
     return 0;
 }
 
-void addNumber(node A, int d) {
+char* concatFunc(char *arr1, char *arr2) {
+    int concatSize = sizeof(arr1) + sizeof(arr2) + 1;
 
-    printf("str 39: countAN=%d\n", countAN);
+    char *arrConcat = (char*)calloc(concatSize, sizeof(char));
 
-    if(d > A.number || d == A.number) {
-
-    printf("str 43: %lu\n", sizeof(A.right));
-
-        if(sizeof(A.right) == 8) {
-            countAN++;
-
-            A.right  = (node *)calloc(1, sizeof(node));
-            A.right->number = d;
-
-            printf("str 51: %d\n", A.right->number);
-
-            return;
-        } else if (sizeof(A.right) == 24) {
-            countAN++;
-
-            printf("str 57\n");
-
-            addNumber(*A.right, d);
-        }
-        
-    }
-    return;
-
-}
-
-void printStructure(node A) {
-
-    printf("str 69: countPS=%d\n", countPS);
-    printf("str 70\n");
-    printf("str 71: %lu\n", sizeof(A.right));
-
-    if(sizeof(A.right) == 24) {
-        printf("str 74: %lu\n", sizeof(A.right));
-        printf("str 75: %d\n", A.number);
-
-        countPS++;
-
-        printStructure(*A.right);
-    } else {
-        return;
+    for (int i = 0; i < sizeof(arr1); i++) {
+        arrConcat[i] = arr1[i];
     }
 
-}
+    printf("%lu\n", sizeof(arr1));
+    printf("%lu\n", sizeof(concatSize));
 
-node createNote(void) {
-    node A;
-    A.number = 5;
-    A.left = NULL;
-    A.right = NULL;
+    int y = 0;
+    for (int i = sizeof(arr1) - 3; i < concatSize; i++) {
+        arrConcat[i] = arr2[y++];
+    }
 
-    return A;
+    return arrConcat;
 }
