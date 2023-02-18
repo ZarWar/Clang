@@ -1,3 +1,5 @@
+// не завершено
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -8,21 +10,21 @@ int main() {
     int howDeep = 4;
 
 
-    // int digitCount = 1;
-    // for(int i = 1; i <= howDeep; i++) {
-    //     printf("_");
-    //     if(i == howDeep && digitCount != 0) {
-    //         printf("%d", howDeep);
-    //         i = 0;
-    //         digitCount--;
-    //     }
-    // }
-    // printf("\n");
+    int digitCount = 1;
+    for(int i = 1; i <= howDeep; i++) {
+        printf("_");
+        if(i == howDeep && digitCount != 0) {
+            printf("%d", howDeep);
+            i = 0;
+            digitCount--;
+        }
+    }
+    printf("\n");
 
 
     int digit = power(2, 3);
 
-    printTree(digit, howDeep);
+    // printTree(digit, howDeep);
 
     return 0;
 }
@@ -48,6 +50,7 @@ void printTree(int digit, int howDeep) {
             digitCount = digitCountControl;
             printf("\n");
         } else if (digitCount != howDeep && digitCount != 1) {
+            // здесь надо поменять условия
             for(int y = 1; y <= (2 * deepCount) - 1; y++) {
                 printf("_");
                 if(y == (2 * deepCount) - 1 && digitCount != 0) {
@@ -61,7 +64,7 @@ void printTree(int digit, int howDeep) {
             digitCount = digitCountControl;
             printf("\n");
         } esle if (digitCount == 1) {
-            
+            // здесь надо дописать условия
         }
 
     }
