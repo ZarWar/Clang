@@ -1,0 +1,3 @@
+ 1  as helloWorld.asm -o helloWorld.o
+ 2  ld helloWorld.o -o helloWorld -lSystem -syslibroot `xcrun -sdk macosx --show-sdk-path`
+ 3  ./helloWorld

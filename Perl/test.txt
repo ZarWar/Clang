@@ -1,0 +1,4 @@
+printf("str 1: go to dd\n");
+printf("str 2: go to ds\n");
+printf("str 3: go to jjj\n");
+printf("str 4\n");

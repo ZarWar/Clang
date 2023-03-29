@@ -1,0 +1,1 @@
+get-command Set-Content | Get-Member
