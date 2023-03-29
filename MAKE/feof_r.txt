@@ -1,4 +1,0 @@
-fuck you, fscanf()
-and fgetc()
-// nor printf
-and fopen()
