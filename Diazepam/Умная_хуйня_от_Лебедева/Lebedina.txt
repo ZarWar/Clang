@@ -1,0 +1,63 @@
+---=== 6.08.2022 ===---
+
+Отправка почты через 25 порт Telnet:
+ Проверка существования email почты.
+ # Сначала узнаём МХ сервер того КОМУ мы шлём, по домену.
+dig mail.ru # шлём на mail
+ # находим МХ имя\адрес сервера, обращаемся к нему по телнет 25 порту:
+telnet mxs.mail.ru 25
+ # Представляемся, типа HELO или EHLO далее слово(имя):
+HELO Vova
+# Ответы 250 код - всё идёт верно. Другие - читать что к чему:
+# Пишем от кого мы пишем (проверит введённый адрес с МХ записью), то есть что писать с @tech-help.ru домена, надо делать это обращение с нашего внешнего ip:
+mail from:<lva@tech-help.ru>
+# пишем кому мы(email находящийся на МХ сервере что узнали ранее). При ответе скажет существует ли такой email :
+rcpt to:<felebobra@mail.ru>
+ # начинаем писать тело после слов data:
+data
+# пишем всё что хотим, оканчиваем знаком . (чтоб была только точка на новой строке и Enter):
+Hello! 
+This it test email from PP.
+.
+# Enter клацаем, получаем что типа отправлено или спам (если фигню писал).Выходим через:
+quit
+
+S_client.
+Его можно использовать для тестирования зашифрованного соединения с почтовым сервером. Чтобы это работало, нам понадобится  имя пользователя и пароль, закодированные в Base64.
+# Закодировать можно, так:
+perl -MMIME::Base64 -e 'print encode_base64(«username»);'
+perl -MMIME::Base64 -e 'print encode_base64(«password»);'
+# Если всё пройдёт успешно, можно переходить к следующему шагу — подключение к почтовому серверу через SSL. Обычно используется порт 587:
+openssl s_client -starttls smtp -connect email.example.com:587
+ehlo example.com
+auth login
+##paste your user base64 string here##
+##paste your password base64 string here##
+mail from: noreply@example.com
+rcpt to: admin@example.com
+data
+Subject: Test 001
+This is a test email.
+.
+quit
+
+Утилита mail (postfix)
+# Конфиги тут:
+/etc/postfix/
+# Смена имени отправителя в консольной утилите Mail (postfix) (macos & unix*):
+# Создаём файл или правим существующий (в конец):
+sudo nano /etc/postfix/smtp_header_checks
+# Вписываем:
+/^From:.*/ REPLACE From: DispName <name@domain.ru>
+# Правим файл конфига postfix:
+sudo nano /etc/postfix/main.cf
+# Пишем в конец:
+smtp_header_checks = pcre:/etc/postfix/smtp_header_checks
+# Рестарт службы:
+sudo postfix reload
+# вот так можем менять SMTP сервер отправки в /etc/postfix/main.cf и рестарт службы:
+relayhost = [192.168.200.211]
+# тест письмо пишем:
+echo "Hello World" | mail -s "Test email" lva@tech-help.ru
+ # HTML слать вот так:
+echo "<b>HTML Message<b>" | mail -s "$(echo -e "This is subject\nContent-Type: text/html")" lva@tech-help.ru

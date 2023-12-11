@@ -1,36 +1,54 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <unistd.h>
 
-char* concatFunc(char *arr1, char *arr2);
+#define STATUS_400 "сервер обнаружил в запросе клиента синтаксическую ошибку. Появился в HTTP/1.0."
+#define STATUS_401 "для доступа к запрашиваемому ресурсу требуется аутентификация. В заголовке ответ должен содержать поле WWW-Authenticate с перечнем условий аутентификации. Иными словами, для доступа к запрашиваемому ресурсу клиент должен представиться, послав запрос, включив при этом в заголовок сообщения поле Authorization с требуемыми для аутентификации данными. Если запрос уже включает данные для авторизации, ответ 401 означает, что в авторизации с ними отказано."
+#define STATUS_402 "сервер обнаружил в запросе клиента синтаксическую ошибку. Появился в HTTP/1.0."
+
+void question(char *status, char *status_explanation, char *check);
 
 int main() {
-    char arr1[] = "Bill_";
-    char arr2[] = "Murray";
 
-    printf("%lu\n", sizeof(arr1));
+    while(true) {
 
-    char *arrConcat = concatFunc(arr1, arr2);
-    printf("%s\n", arrConcat);
+        int count = 0;
 
-    return 0;
+        switch (count) {
+
+        case 0:
+            question("400", STATUS_400, "Bad Request");
+            count++;
+
+        case 1:
+            question("401", STATUS_401, "Unauthorized");
+            count++;
+
+        default:
+            count = 0;
+        }
+
+    }
+
 }
 
-char* concatFunc(char *arr1, char *arr2) {
-    int concatSize = sizeof(arr1) + sizeof(arr2) + 1;
+void question(char *status, char *status_explanation, char *check) {
 
-    char *arrConcat = (char*)calloc(concatSize, sizeof(char));
+    char answer[30] = "\0";
+    int  i = 0;    
+    char c;
 
-    for (int i = 0; i < sizeof(arr1); i++) {
-        arrConcat[i] = arr1[i];
+    printf("%s ? :\n", status);
+
+    while( (c = getchar()) != '\n' ) {
+        answer[i++] = c;
     }
 
-    printf("%lu\n", sizeof(arr1));
-    printf("%lu\n", sizeof(concatSize));
-
-    int y = 0;
-    for (int i = sizeof(arr1) - 3; i < concatSize; i++) {
-        arrConcat[i] = arr2[y++];
+    if (strcmp(answer, check) == 0) {
+        sleep(1);
+        printf("%s\n\n", status_explanation);
+        sleep(1);
     }
 
-    return arrConcat;
 }

@@ -2,17 +2,10 @@ package main
 
 import "fmt"
 
+var pow = []int{1, 2, 4, 8, 16, 32, 64, 128}
+
 func main() {
-    var a, b int;
-
-    fmt.Println(divide(a, b));
-}
-
-func divide (a int, b int) (int, error) {
-    _, err := fmt.Scan(&a, &b) // функция Scan возвращает два параметра, но нам сейчас важно проверить только ошибку
-	if err != nil {
-		return 0, err;
-	} else {
-		return (a / b), err;
+	for i, v := range pow {
+		fmt.Printf("2**%d = %d\n", i, v)
 	}
 }

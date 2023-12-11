@@ -1,0 +1,16 @@
+2023-07-25 00:43:56,000 ERROR AntaresVision.Tracking.Communication.CameraAuditMessageEventArgs IP:[192.168.1.152] Host:[STATION-LABEL-2] - System.InvalidOperationException: The XmlReader state should be Interactive.
+   at System.Xml.Linq.XContainer.ReadContentFrom(XmlReader r)
+   at System.Xml.Linq.XContainer.ReadContentFrom(XmlReader r, LoadOptions o)
+   at System.Xml.Linq.XDocument.Load(XmlReader reader, LoadOptions options)
+   at AntaresVision.Tracking.Communication.CameraAuditMessageEventArgs..ctor(NetworkStream stream, IPAddress ip)
+2023-07-26 15:03:16,000 ERROR AntaresVision.Tracking.Communication.CameraAuditMessageEventArgs IP:[192.168.1.152] Host:[STATION-LABEL-2] - System.InvalidOperationException: The XmlReader state should be Interactive.
+   at System.Xml.Linq.XContainer.ReadContentFrom(XmlReader r)
+   at System.Xml.Linq.XContainer.ReadContentFrom(XmlReader r, LoadOptions o)
+   at System.Xml.Linq.XDocument.Load(XmlReader reader, LoadOptions options)
+   at AntaresVision.Tracking.Communication.CameraAuditMessageEventArgs..ctor(NetworkStream stream, IPAddress ip)
+2023-08-02 15:03:15,000 ERROR AntaresVision.Tracking.Communication.CameraAuditMessageEventArgs IP:[192.168.1.152] Host:[STATION-LABEL-2] - System.InvalidOperationException: The XmlReader state should be Interactive.
+   at System.Xml.Linq.XContainer.ReadContentFrom(XmlReader r)
+   at System.Xml.Linq.XContainer.ReadContentFrom(XmlReader r, LoadOptions o)
+   at System.Xml.Linq.XDocument.Load(XmlReader reader, LoadOptions options)
+   at AntaresVision.Tracking.Communication.CameraAuditMessageEventArgs..ctor(NetworkStream stream, IPAddress ip)
+2023-08-25 02:09:28,775 INFO  AntaresVision.Tracking.Data.DataAccess.Linq.LinqDataAccess IP:[192.168.1.152] Host:[STATION-LABEL-2] - *** START UpdateBookedItems

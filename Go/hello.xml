@@ -1,0 +1,40 @@
+ <?xml version="1.0" encoding="utf-8"?>
+<itsXml interface="MaterialMaster">
+	<header>
+        <transactionTimestamp>2023-02-04T12:42:47Z</transactionTimestamp>
+        <interfaceRevision>1.0</interfaceRevision>
+        <messageId>95fb0dd9-5336-4b1f-8953-04607004631111</messageId>
+        <siteCode>Vyatich</siteCode>
+    </header>
+	<materials listMode="single">
+		<material active="true">
+			<gmid>04607004631111</gmid>
+			<lmid>04607004631111</lmid>
+			<materialDescription>Вятич Кега 10л</materialDescription>
+		</material>
+	</materials>
+	<recipes listMode="single">
+		<recipe active="true" serializationMode="2" serializationIncrement="1" useAggregation="false" >
+			<recipeId>04607004631111</recipeId>
+			<gmid>04607004631111</gmid>
+			<recipeDescription>10</recipeDescription>
+			<codingSet>RUSSIANINDUSTRIAL</codingSet>
+			<domainId>RUSSIANINDUSTRIAL</domainId>
+			<overloadPercent>0</overloadPercent>
+			<additionalDetails/>
+		</recipe>
+	</recipes>
+	<levels gmid="04607004631111" recipeId="04607004631111">
+		<level levelId="100">
+			<ntin codingRule="GS1_SGTIN_RU_INDUSTRIAL_GROUP1">04607004631111</ntin>
+			<geometry>1</geometry>
+			<action type="ByList"/>
+			<additionalDetails>
+				<detail name="reorderQuantity">0</detail>
+				<detail name="SerialLength">7</detail>
+				<detail name="cryptoexpirydaterange">3</detail>
+				<detail name="kegVolume">30</detail>
+			</additionalDetails>
+		</level>
+	</levels>
+</itsXml>
